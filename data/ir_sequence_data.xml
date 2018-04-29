@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="seq_formulir_pendaftaran" model="ir.sequence">
+            <field name="name">Formulir Pendaftaran</field>
+            <field name="code">formulir.siswa.psb.ocb11</field>
+            <field name="prefix">FRM/%(range_year)s/</field>
+            <field name="padding">4</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+    </data>
+</odoo>

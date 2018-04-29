@@ -1,0 +1,9 @@
+<odoo>
+    <data>
+        <menuitem name="PSB" id="siswa_psb_ocb11.root_menu"/>
+
+        <menuitem name="Registrasi" id="siswa_psb_ocb11.categories_menu_registrasi" parent="siswa_psb_ocb11.root_menu" sequence="1" />
+
+        <menuitem name="Formulir" id="siswa_psb_ocb11.action_menu_formulir" parent="siswa_psb_ocb11.categories_menu_registrasi" action="siswa_psb_ocb11.formulir_action_window" sequence="1"/>
+    </data>
+</odoo>

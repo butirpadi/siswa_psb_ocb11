@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_siswa_psb_ocb11_siswa_psb_ocb11,siswa_psb_ocb11.siswa_psb_ocb11,model_siswa_psb_ocb11_siswa_psb_ocb11,,1,0,0,0

@@ -1,0 +1,60 @@
+<odoo>
+  <data>
+
+    <!-- explicit list view definition -->    
+    <record model="ir.ui.view" id="siswa_psb_ocb11.formulir_list">
+      <field name="name">siswa_psb_ocb11_formulir_list</field>
+      <field name="model">siswa_psb_ocb11.formulir</field>
+      <field name="arch" type="xml">
+        <tree  >
+          <field name="name"/>
+          <field name="tahunajaran_id" context="{'active_test': False}"/>
+          <field name="nama_calon" />
+          <field name="jenjang" />
+          <field name="tanggal" />
+          <field name="harga"/>
+        </tree>
+      </field>
+    </record>
+    
+    <!-- actions opening views on models -->
+    <record model="ir.actions.act_window" id="siswa_psb_ocb11.formulir_action_window">
+      <field name="name">Formulir Pendaftaran</field>
+      <field name="res_model">siswa_psb_ocb11.formulir</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="view_formulir_form" model="ir.ui.view">
+        <field name="name">formulir.ocb11.form</field>
+        <field name="model">siswa_psb_ocb11.formulir</field>
+        <field name="arch" type="xml">
+            <form string="formulir" class="o_sale_order">
+                <header>
+                    <button name="action_print" type="object" string="Cetak Formulir" attrs="{'invisible':[('name', '=', 'New')]}" class="btn btn-default" />
+                    <button name="action_print_kwitansi" type="object" string="Cetak Kwitansi" attrs="{'invisible':[('name', '=', 'New')]}" class="btn btn-default" />
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="tanggal" attrs="{'readonly':[('name', '!=', 'New')]}" />
+                            <field name="nama_calon"  />
+                            <field name="jenjang"  />
+                        </group>
+                        <group>
+                            <field name="tahunajaran_id" options="{'no_create_edit': True,'no_open':True}" context="{'active_test': False}" attrs="{'readonly':[('name', '!=', 'New')]}" />
+                            <field name="harga"  />                            
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    
+  </data>
+</odoo>
