@@ -1,0 +1,80 @@
+<odoo>
+    <data>
+
+    <record id="view_distribusi_siswa_filter" model="ir.ui.view">
+        <field name="name">distribusi.siswa.list.select</field>
+        <field name="model">siswa_psb_ocb11.distribusi_siswa</field>
+        <field name="arch" type="xml">
+            <search string="Search Distribusi Siswa">
+                <field name="name" string="Name" filter_domain="['|'('name','ilike',self),
+                                                                    ('jenjang_id','ilike',self)
+                                                                    ]"/>
+                <group expand="0" string="Group By">
+                    <filter name="group_tahunajaran_id" string="Tahun Ajaran" domain="[]" context="{'group_by':'tahunajaran_id'}"/>
+                    <filter name="group_jenjang" string="Jenjang" domain="[]" context="{'group_by':'jenjang_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="siswa_psb_ocb11.formulir_list">
+        <field name="name">siswa_psb_ocb11_distribusi_siswa_list</field>
+        <field name="model">siswa_psb_ocb11.distribusi_siswa</field>
+        <field name="arch" type="xml">
+            <tree  >
+                <field name="name" invisible="1" />
+                <field name="tahunajaran_id" context="{'active_test': False}"/>
+                <field name="jenjang_id" />
+            </tree>
+        </field>
+    </record>
+
+        <record id="siswa_psb_ocb11.distribusi_siswa_form" model="ir.ui.view">
+            <field name="name">ocb11.distribusi.siswa.form</field>
+            <field name="model">siswa_psb_ocb11.distribusi_siswa</field>
+            <field name="arch" type="xml">
+                <form string="Distribusi Siswa" class="o_sale_order" create="false">
+                    <header>
+                        <button type="object" name="action_confirm" string="Auto Distribute" />
+                    </header>
+                    <sheet>
+                        <div class="oe_title oe_read_only">
+                            <h1>
+                                <field name="name" readonly="1"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="tahunajaran_id" options="{'no_create_edit': True,'no_open':True,'no_create':True,'no_edit':True}" attrs="{'readonly':[('name', '!=', '0')]}"/>
+                            </group>
+                            <group>
+                                <field name="jenjang_id" options="{'no_create_edit': True,'no_open':True,'no_create':True,'no_edit':True}" attrs="{'readonly':[('name', '!=', '0')]}" />
+                                <field name="rombel_ids" required="1" widget="many2many_tags" options="{'no_create_edit': True,'no_open':True,'no_create':True,'no_edit':True}" attrs="{'readonly':[('name', '!=', '0')]}" />
+                            </group>
+                        </group>
+                        <notebook  >
+                            <page attrs="{'invisible':[('name', '=', '0')]}" name="data_siswa" string="Data Calon Siswa" >
+                                <field name='calon_siswa_ids' readonly='1'>
+                                    <tree>
+                                        <field name='name'  />
+                                        <field name='reg_number'  />
+                                        <!-- <field name='formulir_id'/> -->
+                                        <field name='rombel_id'/>
+                                    </tree>
+                                </field>
+                            </page>                  
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="siswa_psb_ocb11.distribusi_siswa_action_window">
+            <field name="name">Distribusi Siswa</field>
+            <field name="res_model">siswa_psb_ocb11.distribusi_siswa</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{'search_default_group_tahunajaran_id':1,'search_default_group_jenjang':1}</field>
+        </record>
+
+    </data>
+</odoo>

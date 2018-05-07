@@ -20,14 +20,18 @@
     'version': '1.0',
 
     # any module necessary for this one to work correctly
-    'depends': ['base', 'siswa_ocb11', 'siswa_keu_ocb11'],
+    'depends': ['base', 'siswa_ocb11', 'siswa_keu_ocb11', 'siswa_tab_ocb11'],
 
     # always loaded
     'data': [
         # 'security/ir.model.access.csv',
         'data/ir_sequence_data.xml',
-        'views/formulir.xml',
         'reports/report_formulir.xml',
+        'reports/report_kwitansi_formulir.xml',
+        'views/formulir.xml',
+        'views/registrasi.xml',
+        # 'views/wizard_distribusi_siswa_view.xml',
+        'views/distribusi_siswa_view.xml',
         'views/menu.xml',
         # 'views/templates.xml',
     ],

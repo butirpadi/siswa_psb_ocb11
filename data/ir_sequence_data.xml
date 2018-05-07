@@ -4,7 +4,15 @@
         <record id="seq_formulir_pendaftaran" model="ir.sequence">
             <field name="name">Formulir Pendaftaran</field>
             <field name="code">formulir.siswa.psb.ocb11</field>
-            <field name="prefix">FRM/%(range_year)s/</field>
+            <field name="prefix">PSB/%(range_year)s/</field>
+            <field name="padding">4</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+        <record id="seq_nomor_registrasi" model="ir.sequence">
+            <field name="name">Nomor Registrasi</field>
+            <field name="code">reg.no.siswa.psb.ocb11</field>
+            <field name="prefix">PSB/%(range_year)s/</field>
             <field name="padding">4</field>
             <field name="company_id" eval="False"/>
         </record>

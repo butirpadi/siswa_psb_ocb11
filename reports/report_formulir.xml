@@ -25,7 +25,7 @@
             file="siswa_psb_ocb11.report_formulir"
             attachment_use="False"
             print_report_name="'FormulirPendaftaran-%s' % object.name"
-            menu="True"
+            menu="False"
             paperformat="format_formulir_pendaftaran"
         />
 
@@ -35,15 +35,21 @@
                     <t t-call="web.basic_layout">
                         <div class="page">
                             <style>
+                                .row{
+                                    
+                                }
                                 table.table{
-                                    background-color:transparent!important;
+                                    border-left:none!important;
+                                    border-right:none!important;
+                                    border-bottom:none!important;
+                                    background-color:transparent!important
                                     border:none;
                                 }
 
                                 table.table tbody tr td {
+                                    border-right:none!important;
                                     background-color:transparent!important;
                                     border:none;
-                                    vertical-align:bottom;
                                 }
                                 td.under_line{
                                     border-bottom:thin solid black!important;
@@ -55,48 +61,60 @@
                                     <img width="100%" alt="set company logo" t-attf-src="data:image/gif;base64, #{user.company_id.logo}"/>
                                 </div>
                                 <div class="col-xs-8 text-center" >
-                                    <strong><h4 style="text-transform:uppercase;" t-esc="user.company_id.name" ></h4></strong>
+                                    <h3 style="text-transform:uppercase;font-weight:bolder;" t-esc="user.company_id.name" ></h3>
                                     <p style="margin-top:0;margin-bottom:0;" ><span t-esc="user.company_id.street" ></span> <span t-esc="user.company_id.street2" ></span></p>
                                     <p style="margin-top:0;margin-bottom:0;" ><span t-esc="user.company_id.city" ></span> <span t-esc="user.company_id.state_id.name" ></span> <span t-esc="user.company_id.zip" ></span></p>
-                                    <p style="margin-top:0;margin-bottom:0;" >Phone <span t-esc="user.company_id.phone" ></span></p>
+                                    <p style="margin-top:0;margin-bottom:0;" >Telp: <span t-esc="user.company_id.phone" ></span></p>
                                 </div>
                                 <div class="col-xs-2 text-center" >
                                 </div>
                                 <div class="col-xs-12 text-center" >
-                                    <hr style="border-top: 3px double #8c8b8b;" />
-                                    <h4>FORMULIR PENDAFTARAN</h4>
+                                    <hr style="border-top: 4px double black;" />
+                                    <h4 style="font-weight:bold;">FORMULIR PENDAFTARAN</h4>
                                     <span t-field="o.tahunajaran_id" />
-                                    <br/>.
-                                    <br/>.
+                                    <br/>
+                                    <br/>
                                 </div>
                                 
                                 <div class="col-xs-12" >                                
-                                    <table class="table ">
+                                    <table class="table">
                                         <tbody>
                                             <tr>
                                                 <td colspan="6" >
-                                                    <label>BIODATA SISWA</label>
+                                                    <strong>BIODATA SISWA</strong>
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td colspane="6" >
-                                                    <label>ORANG TUA/WALI</label>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td >
+                                                <td class="col-xs-3" >
                                                     <label>Nomor Formulir</label>
                                                 </td>
                                                 <td style="width:10px;" >:</td>
                                                 <td>
                                                     <span t-esc="o.name" />            
                                                 </td>
-                                                <td >
+                                                <td class="col-xs-2" >
                                                     <label>Tanggal</label>
                                                 </td>
                                                 <td style="width:10px;" >:</td>
                                                 <td>
-                                                    <span t-esc="o.tanggal" />            
+                                                    <span t-esc="o.tanggal" t-field-options='{"format": "dd MMM y"}' />            
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td >
+                                                    <label>Mendaftar Ke</label>
+                                                </td>
+                                                <td>:</td>
+                                                <td colspan="4" class="under_line" >
+                                                    <t t-if="o.jenjang==1" >
+                                                        Play Group
+                                                    </t>
+                                                    <t t-if="o.jenjang==2" >
+                                                        TK A
+                                                    </t>
+                                                    <t t-if="o.jenjang==3" >
+                                                        TK B
+                                                    </t>
                                                 </td>
                                             </tr>
                                             <tr>
@@ -122,9 +140,9 @@
                                                     <label>Jenis Kelamin</label>
                                                 </td>
                                                 <td>:</td>
-                                                <td colspan="4"  >
-                                                    <input type="checkbox" />
-                                                    <input type="checkbox" />
+                                                <td colspan="4"  class="under_line">
+                                                    <input type="checkbox" /> <span>Laki-laki</span> <![CDATA[&nbsp;&nbsp;&nbsp;]]>
+                                                    <input type="checkbox" /> <span>Perempuan</span>
                                                 </td>
                                             </tr>
                                             <tr>
@@ -141,16 +159,14 @@
                                                     <label>Anak ke</label>
                                                 </td>
                                                 <td>:</td>
-                                                <td colspan="4" class="under_line" >
+                                                <td class="under_line" >
                                                     
                                                 </td>
-                                            </tr>
-                                            <tr>
                                                 <td >
                                                     <label>Jumlah Saudara</label>
                                                 </td>
                                                 <td>:</td>
-                                                <td colspan="4" class="under_line" >
+                                                <td  >
                                                     
                                                 </td>
                                             </tr>
@@ -182,13 +198,87 @@
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td colspane="6" >
-                                                    <label>ORANG TUA/WALI</label>
+                                                <td colspan="6" >
+                                                    <strong>ORANG TUA/WALI</strong>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td >
+                                                    <label>Ayah</label>    
+                                                </td>
+                                                <td>:</td>
+                                                <td colspan="4" class="under_line" >
+                                                    
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td >
+                                                    <label>Pekerjaan</label>    
+                                                </td>
+                                                <td>:</td>
+                                                <td colspan="4" class="under_line" >
+                                                    
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td >
+                                                    <label>Telp</label>    
+                                                </td>
+                                                <td>:</td>
+                                                <td colspan="4" class="under_line" >
+                                                    
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td >
+                                                    <label>Ibu</label>    
+                                                </td>
+                                                <td>:</td>
+                                                <td colspan="4" class="under_line" >
+                                                    
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td >
+                                                    <label>Pekerjaan</label>    
+                                                </td>
+                                                <td>:</td>
+                                                <td colspan="4" class="under_line" >
+                                                    
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td >
+                                                    <label>Telp</label>    
+                                                </td>
+                                                <td>:</td>
+                                                <td colspan="4" class="under_line" >
+                                                    
                                                 </td>
                                             </tr>
                                         </tbody>
                                     </table>
+                                    <br/><![CDATA[&nbsp;]]>
+                                    <br/><![CDATA[&nbsp;]]>
+                                    <br/><![CDATA[&nbsp;]]>
+                                    <br/><![CDATA[&nbsp;]]>
+                                    <br/><![CDATA[&nbsp;]]>    
                                 </div>
+                                
+                                <div class="col-xs-4 text-center" >
+                                    
+                                </div>
+                                <div class="col-xs-4 text-center" ></div>
+                                <div class="col-xs-4 text-center" >
+                                    <strong>Orang Tua/Wali,</strong>
+                                    <br/><![CDATA[&nbsp;]]>
+                                    <br/><![CDATA[&nbsp;]]>
+                                    <br/><![CDATA[&nbsp;]]>
+                                    <br/><![CDATA[&nbsp;]]>
+                                    <br/><![CDATA[&nbsp;]]>
+                                    (______________________)
+                                </div>
+
                             </div>                        
                         </div>
                     </t>
