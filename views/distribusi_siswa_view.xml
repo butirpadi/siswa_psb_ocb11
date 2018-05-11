@@ -25,6 +25,7 @@
                 <field name="name" invisible="1" />
                 <field name="tahunajaran_id" context="{'active_test': False}"/>
                 <field name="jenjang_id" />
+                <field name="state" />
             </tree>
         </field>
     </record>
@@ -35,7 +36,10 @@
             <field name="arch" type="xml">
                 <form string="Distribusi Siswa" class="o_sale_order" create="false">
                     <header>
-                        <button type="object" name="action_confirm" string="Auto Distribute" />
+                        <button type="object" name="action_reset" string="Reset" class="oe_edit_only" attrs="{'invisible':[('is_distributed','=',False)]}" confirm="Are you sure you want to do this?" />
+                        <button type="object" name="action_auto_distribute" string="Auto Distribute" class="oe_edit_only" attrs="{'invisible':['|',('is_manual', '=', True),('is_distributed','=',True)]}" />
+                        <button type="object" name="action_manual_distribute" string="Manual Distribute" class="oe_edit_only" attrs="{'invisible':['|',('is_manual', '=', True),('is_distributed','=',True)]}" />
+                        <field name="state" widget="statusbar" statusbar_visible="draft,done"/>
                     </header>
                     <sheet>
                         <div class="oe_title oe_read_only">
@@ -50,6 +54,8 @@
                             <group>
                                 <field name="jenjang_id" options="{'no_create_edit': True,'no_open':True,'no_create':True,'no_edit':True}" attrs="{'readonly':[('name', '!=', '0')]}" />
                                 <field name="rombel_ids" required="1" widget="many2many_tags" options="{'no_create_edit': True,'no_open':True,'no_create':True,'no_edit':True}" attrs="{'readonly':[('name', '!=', '0')]}" />
+                                <field name="is_manual" invisible="1" />
+                                <field name="is_distributed" invisible="1" />
                             </group>
                         </group>
                         <notebook  >
@@ -58,7 +64,7 @@
                                     <tree>
                                         <field name='name'  />
                                         <field name='reg_number'  />
-                                        <!-- <field name='formulir_id'/> -->
+                                        <field name='jenis_kelamin'  />
                                         <field name='rombel_id'/>
                                     </tree>
                                 </field>
