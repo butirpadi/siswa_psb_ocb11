@@ -28,6 +28,7 @@
         'data/ir_sequence_data.xml',
         'reports/report_formulir.xml',
         'reports/report_kwitansi_formulir.xml',
+        'reports/report_kwitansi_registrasi.xml',
         'views/formulir.xml',
         'views/registrasi.xml',
         # 'views/wizard_distribusi_siswa_view.xml',

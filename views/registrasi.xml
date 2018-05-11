@@ -29,6 +29,7 @@
                 <form string="Registrasi" class="o_sale_order">
                     <header>
                         <button name="action_confirm" type="object" string="Confirm" attrs="{'invisible':['|',('state', '=', 'reg'),('name', '=', '')]}" class="btn btn-primary" />
+                        <button name="action_print_kwitansi" type="object" string="Cetak Kwitansi" attrs="{'invisible':['|',('state', '=', 'draft'),('name', '=', '')]}" class="btn" />
                         <field name="state" widget="statusbar" statusbar_visible="draft,reg"/>
                     </header>
                     <sheet>
@@ -121,6 +122,7 @@
                     <field name="name" />
                     <field name="jenis_kelamin" />
                     <field name="tanggal_lahir" />
+                    <field name="state" />
                 </tree>
             </field>
         </record>

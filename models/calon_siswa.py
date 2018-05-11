@@ -52,7 +52,10 @@ class calon_siswa(models.Model):
     is_distributed = fields.Boolean('is distributed', default=False)
     rombel_id = fields.Many2one('siswa_ocb11.rombel',string='Rombongan Belajar')
     payment_lines = fields.One2many('siswa_psb_ocb11.calon_siswa_biaya', inverse_name='calon_siswa_id' , string='Pembayaran')
-
+    total = fields.Float('Total Bayar')
+    terbilang = fields.Char('Terbilang')
+    satuan = ['', 'satu', 'dua', 'tiga', 'empat', 'lima', 'enam', 'tujuh',
+          'delapan', 'sembilan', 'sepuluh', 'sebelas']
 
     @api.onchange('siswa_id')
     def siswa_id_onchange(self):
@@ -226,15 +229,45 @@ class calon_siswa(models.Model):
                                         'biaya_id' : pay_biaya_id, 
                                         'bayar' : pay.dibayar 
                                         })]
-                
+        # confirm pembayaran 
         pembayaran.action_confirm()
+
+        # set terbilang
+        if total_biaya == 0:
+            self.terbilang = 'nol'
+        else:
+            t = self.terbilang_(total_biaya)
+            while '' in t:
+                t.remove('')
+            self.terbilang = ' '.join(t) 
+        
+        self.terbilang += ' Rupiah'
+        # set total
+        self.total = total_biaya
+
         # raise exceptions.except_orm(_('Warning'), _('You can not delete Done state data'))
     
-    # @api.depends('tanggal_lahir')
-    # def _compute_usia(self):
-    #     for rec in self:
-    #         print(type(rec.tanggal_lahir))
-    #         today = date.today()
-    #         usia =  today.year - rec.year - ((today.month, today.day) < (rec.month, rec.day))
-    #         print(usia)           
+    def terbilang_(self, n):
+        if n >= 0 and n <= 11:
+            hasil = [self.satuan[int(n)]]
+        elif n >= 12 and n <= 19:
+            hasil = self.terbilang_(n % 10) + ['belas']
+        elif n >= 20 and n <= 99:
+            hasil = self.terbilang_(n / 10) + ['puluh'] + self.terbilang_(n % 10)
+        elif n >= 100 and n <= 199:
+            hasil = ['seratus'] + self.terbilang_(n - 100)
+        elif n >= 200 and n <= 999:
+            hasil = self.terbilang_(n / 100) + ['ratus'] + self.terbilang_(n % 100)
+        elif n >= 1000 and n <= 1999:
+            hasil = ['seribu'] + self.terbilang_(n - 1000)
+        elif n >= 2000 and n <= 999999:
+            hasil = self.terbilang_(n / 1000) + ['ribu'] + self.terbilang_(n % 1000)
+        elif n >= 1000000 and n <= 999999999:
+            hasil = self.terbilang_(n / 1000000) + ['juta'] + self.terbilang_(n % 1000000)
+        else:
+            hasil = self.terbilang_(n / 1000000000) + ['milyar'] + self.terbilang_(n % 100000000)
+        return hasil
+
     
+    def action_print_kwitansi(self):
+        return self.env.ref('siswa_psb_ocb11.report_kwitansi_registrasi_action').report_action(self)
