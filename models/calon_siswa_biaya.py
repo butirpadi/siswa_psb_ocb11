@@ -9,6 +9,7 @@ class calon_siswa_biaya(models.Model):
     _name = 'siswa_psb_ocb11.calon_siswa_biaya'
 
     calon_siswa_id = fields.Many2one('siswa_psb_ocb11.calon_siswa', string="Calon Siswa")
+    # is_siswa_lama = fields.Boolean(string='is Siswa Lama',related="calon_siswa_id.is_siswa_lama", store=True)
     biaya_id = fields.Many2one('siswa_keu_ocb11.biaya', string="Biaya")
     is_bulanan = fields.Boolean(string='Bulanan',related="biaya_id.is_bulanan")
     bulan = fields.Selection([(1, 'Januari'), 
@@ -27,6 +28,11 @@ class calon_siswa_biaya(models.Model):
     harga = fields.Float('Harga', compute="_compute_harga", store=True)
     dibayar = fields.Float('Dibayar', required=True, default=0)
 
+    # @api.onchange('is_siswa_lama')
+    # def onchange_is_siswa_lama(self):
+    #     domain = {'biaya_id':[('is_siswa_baru_only','=',False)]}
+    #     return {'domain':domain, 'value':{'biaya_id':[]}}    
+
     @api.depends('biaya_id')
     def _compute_harga(self):
         
@@ -42,6 +48,6 @@ class calon_siswa_biaya(models.Model):
                     if by.biaya_id.is_different_by_gender:
                         if rec.calon_siswa_id.jenis_kelamin == 'perempuan':
                             rec.harga = by.harga_alt
-                    if by.biaya_id.is_bulanan:
-                        rec.dibayar = by.harga
+                    # if by.biaya_id.is_bulanan:
+                    rec.dibayar = by.harga
                     

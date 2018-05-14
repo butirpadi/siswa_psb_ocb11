@@ -38,7 +38,7 @@
                     <header>
                         <button type="object" name="action_reset" string="Reset" class="oe_edit_only" attrs="{'invisible':[('is_distributed','=',False)]}" confirm="Are you sure you want to do this?" />
                         <button type="object" name="action_auto_distribute" string="Auto Distribute" class="oe_edit_only" attrs="{'invisible':['|',('is_manual', '=', True),('is_distributed','=',True)]}" />
-                        <button type="object" name="action_manual_distribute" string="Manual Distribute" class="oe_edit_only" attrs="{'invisible':['|',('is_manual', '=', True),('is_distributed','=',True)]}" />
+                        <!-- <button type="object" name="action_manual_distribute" string="Manual Distribute" class="oe_edit_only" attrs="{'invisible':['|',('is_manual', '=', True),('is_distributed','=',True)]}" /> -->
                         <field name="state" widget="statusbar" statusbar_visible="draft,done"/>
                     </header>
                     <sheet>

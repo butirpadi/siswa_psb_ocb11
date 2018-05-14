@@ -27,9 +27,9 @@ class distribusi_siswa(models.Model):
             siswa = self.env['res.partner'].search([('calon_siswa_id','=',cs.id)])
             # delete from rombel_siswa            
             self.env['siswa_ocb11.rombel_siswa'].search([('siswa_id','=',siswa.id),('tahunajaran_id','=',self.tahunajaran_id.id)]).unlink()
-            # delete from siswa
-            if not cs.is_siswa_lama:
-                self.env['res.partner'].search([('calon_siswa_id','=',cs.id)]).unlink()
+            # # delete from siswa
+            # if not cs.is_siswa_lama:
+            #     self.env['res.partner'].search([('calon_siswa_id','=',cs.id)]).unlink()
 
         # # reset is_distributed to false
         self.is_distributed = False
@@ -54,7 +54,16 @@ class distribusi_siswa(models.Model):
                             cap -= 1
                             cs.rombel_id = rb.id
         # # register siswa
-        # for cs in self.calon_siswa_ids:
+        for cs in self.calon_siswa_ids:
+            id_siswa = cs.registered_siswa_id.id
+            if cs.is_siswa_lama:
+                id_siswa = cs.siswa_id.id
+
+            self.env['res.partner'].search([('id','=',id_siswa)]).write({
+                    'rombels' : [(0, 0,  { 'rombel_id' : cs.rombel_id.id, 'tahunajaran_id' : cs.tahunajaran_id.id })],
+                    'active_rombel_id' : cs.rombel_id.id,
+                })
+
         #     if cs.is_siswa_lama:
         #         # update siswa lama
         #         self.env['res.partner'].search([('id','=',cs.siswa_id.id)]).write({

@@ -23,7 +23,12 @@ class distribusi_siswa(models.TransientModel):
             'name' : 'Distribusi Siswa'
         })
         # add calon siswa
-        calon_siswas = self.env['siswa_psb_ocb11.calon_siswa'].search(['&','&',('tahunajaran_id','=',self.tahunajaran_id.id),('jenjang_id','=',self.jenjang_id.id),('is_distributed','=',False)])
+        calon_siswas = self.env['siswa_psb_ocb11.calon_siswa'].search(['&','&','&',
+                                                    ('tahunajaran_id','=',self.tahunajaran_id.id),
+                                                    ('jenjang_id','=',self.jenjang_id.id),
+                                                    ('state','=','reg'),
+                                                    ('is_distributed','=',False)
+                                                    ])
         reg_cs = []
         for cs in calon_siswas:
             self.write({

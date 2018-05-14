@@ -1,118 +1,6 @@
 <odoo>
     <data>
 
-        <!-- <record id="format_kwitansi_registrasi_pendaftaran" model="report.paperformat">
-            <field name="name">Kwitansi Pendaftaran</field>
-            <field name="default" eval="True"/>
-            <field name="format">custom</field>
-            <field name="page_height">110</field>
-            <field name="page_width">215</field>
-            <field name="orientation">Portrait</field>
-            <field name="margin_top">10</field>
-            <field name="margin_bottom">10</field>
-            <field name="margin_left">10</field>
-            <field name="margin_right">10</field>
-            <field name="header_line" eval="False"/>
-            <field name="header_spacing">3</field>
-        </record>
-
-        <report
-            id="report_kwitansi_registrasi_action"
-            model="siswa_psb_ocb11.calon_siswa"
-            string="Kwitansi Pendaftaran"
-            report_type="qweb-html"
-            name="siswa_psb_ocb11.report_kwitansi_registrasi"
-            file="siswa_psb_ocb11.report_kwitansi_registrasi"
-            attachment_use="False"
-            print_report_name="'Kwitansi-%s' % object.reg_number"
-            menu="False"
-            paperformat="format_kwitansi_registrasi_pendaftaran"
-        />
-
-        <template id="report_kwitansi_registrasi">
-            <t t-call="web.html_container">            
-                <t t-foreach="docs" t-as="o">
-                    <t t-call="web.basic_layout">
-                        <div class="page">
-                            <style>
-                                
-                            </style>
-
-                            <div class="row" >
-                                <div class="col-xs-8" >
-                                    <strong><p style="margin-top:0;margin-bottom:0;text-transform:uppercase;font-weight:bolder;" t-esc="user.company_id.name"/></strong>
-                                    <p style="margin-top:0;margin-bottom:0;" ><span t-esc="user.company_id.street" ></span> <span t-esc="user.company_id.street2" ></span></p>
-                                    <p style="margin-top:0;margin-bottom:0;" ><span t-esc="user.company_id.city" ></span> <span t-esc="user.company_id.state_id.name" ></span> <span t-esc="user.company_id.zip" ></span></p>
-                                    <p style="margin-top:0;margin-bottom:0;" >Telp: <span t-esc="user.company_id.phone" ></span></p>
-                                </div>
-                                <div class="col-xs-4 text-right" >
-                                    <h3><strong>KWITANSI</strong></h3>
-                                    <span t-esc="o.reg_number" />
-                                </div>
-                                <div class="col-xs-12" >  
-                                    <hr style="border-top: 4px double black;" />                              
-                                    <table class="table" >
-                                        <tbody>
-                                            <tr>
-                                                <td class="col-xs-3" >
-                                                    <label>Sudah terima dari</label>
-                                                </td>
-                                                <td>:</td>
-                                                <td>
-                                                    <i t-field="o.name" />
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <label>Banyaknya uang</label>
-                                                </td>
-                                                <td>:</td>
-                                                <td>
-                                                    <i style="text-transform:capitalize" t-field="o.terbilang" />
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <label>Untuk pembayaran</label>
-                                                </td>
-                                                <td>:</td>
-                                                <td>
-                                                    <i>registrasi pendaftaran siswa baru </i>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>  
-                                </div>
-                                
-                                <div class="col-xs-4" style="vertical-align:bottom;" >
-                                    <br/><![CDATA[&nbsp;]]>
-                                    <br/><![CDATA[&nbsp;]]>
-                                    <h3 style="border:thin solid black; padding:10px;" >
-                                        <strong>Rp.</strong><![CDATA[&nbsp;]]><![CDATA[&nbsp;]]><![CDATA[&nbsp;]]><![CDATA[&nbsp;]]>
-                                        <strong><t t-esc="'{0:,.2f}'.format(o.total)" /></strong>
-                                        <![CDATA[&nbsp;]]><![CDATA[&nbsp;]]><![CDATA[&nbsp;]]>
-                                    </h3>
-                                </div>
-                                <div class="col-xs-4 text-center" ></div>
-                                <div class="col-xs-4 text-center" >
-                                    <span t-field="user.company_id.city" />, <span t-field="o.tanggal_registrasi" t-field-options='{"format": "dd MMMM y"}' />
-                                    
-                                    <br/><![CDATA[&nbsp;]]>
-                                    <br/><![CDATA[&nbsp;]]>
-                                    <br/><![CDATA[&nbsp;]]>
-                                    <br/><![CDATA[&nbsp;]]>
-                                    <br/><![CDATA[&nbsp;]]>
-                                    (______________________)
-                                </div>
-
-                            </div>                        
-                        </div>
-                    </t>
-                </t>
-            </t>
-        </template> -->
-
-
         <report
             id="report_bukti_pembayaran_registrasi_action"
             model="siswa_psb_ocb11.calon_siswa"
@@ -206,20 +94,6 @@
                                                 <td  >:</td>
                                                 <td>
                                                     <span t-field="o.name" />
-                                                </td>
-                                            </tr>
-                                            <tr style="border-bottom:thin solid black;" >
-                                                <td></td>
-                                                <td  ></td>
-                                                <td>
-                                                    
-                                                </td>
-                                                <td  >
-                                                    
-                                                </td>
-                                                <td  >:</td>
-                                                <td>
-                                                    
                                                 </td>
                                             </tr>
                                         </tbody>

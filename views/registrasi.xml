@@ -5,9 +5,8 @@
             <field name="model">siswa_psb_ocb11.calon_siswa</field>
             <field name="arch" type="xml">
                 <search string="Search Siswa">
-                    <field name="name" string="Nama" filter_domain="['|','|','|','|','|','|',('name','ilike',self),
+                    <field name="name" string="Nama" filter_domain="['|','|','|','|','|',('name','ilike',self),
                                                                         ('panggilan','ilike',self),
-                                                                        ('formulir_id','ilike',self),
                                                                         ('ayah','ilike',self),
                                                                         ('ibu','ilike',self),
                                                                         ('nis','ilike',self),
@@ -29,7 +28,8 @@
                 <form string="Registrasi" class="o_sale_order">
                     <header>
                         <button name="action_confirm" type="object" string="Confirm" attrs="{'invisible':['|',('state', '=', 'reg'),('name', '=', '')]}" class="btn btn-primary" />
-                        <button name="action_print_kwitansi" type="object" string="Cetak Kwitansi" attrs="{'invisible':['|',('state', '=', 'draft'),('name', '=', '')]}" class="btn" />
+                        <button name="action_print_kwitansi" type="object" string="Print" attrs="{'invisible':['|',('state', '=', 'draft'),('name', '=', '')]}" class="btn" />
+                        <button name="action_reset" type="object" string="Reset" attrs="{'invisible':[('state', '!=', 'reg')]}" class="btn btn-danger" confirm="Are you sure to do this action?" />
                         <field name="state" widget="statusbar" statusbar_visible="draft,reg"/>
                     </header>
                     <sheet>
@@ -42,11 +42,11 @@
                             <page name="page_bioadata" string="Biodata" >
                                 <group string="Biodata Siswa" >
                                     <group  >
-                                        <field name="is_siswa_lama"  />
-                                        <field name="siswa_id" attrs="{'invisible':[('is_siswa_lama', '=', False)]}" options="{'no_create':True,'no_edit':True,'no_create_edit': True,'no_open':True}" />
                                         <field name="tahunajaran_id" options="{'no_create':True,'no_edit':True,'no_create_edit': True,'no_open':True}" context="{'active_test': False}" required="1" />
                                         <field name="tanggal_registrasi"  />
                                         <!-- <field name="formulir_id" options="{'no_create':True,'no_edit':True,'no_create_edit': True,'no_open':True}" /> -->
+                                        <field name="is_siswa_lama"  />
+                                        <field name="siswa_id" attrs="{'invisible':[('is_siswa_lama', '=', False)], 'required':[('is_siswa_lama','=',True)] }" options="{'no_create':True,'no_edit':True,'no_create_edit': True,'no_open':True}" />
                                         <field name="name" />
                                         <!-- <field name="formulir_tahunajaran_id"/> -->
                                         <field name="jenjang_id" options="{'no_create':True,'no_edit':True,'no_create_edit': True,'no_open':True}" />

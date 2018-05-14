@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from odoo import models, fields, api, _
+from odoo import models, fields, api, exceptions, _
 from pprint import pprint
 from datetime import datetime, date
 import calendar
@@ -10,7 +10,8 @@ class calon_siswa(models.Model):
 
     state = fields.Selection([('draft', 'Draft'), ('reg', 'Registered')], string='State', required=True, default='draft')
     is_siswa_lama = fields.Boolean('Siswa Lama', default=False)
-    siswa_id = fields.Many2one('res.partner', string="Data Siswa Lama", domain=[('is_siswa', '=', True)])
+    siswa_id = fields.Many2one('res.partner', string="Data Siswa Lama")
+    registered_siswa_id = fields.Many2one('res.partner', string="Registered Siswa")
     tahunajaran_id = fields.Many2one('siswa_ocb11.tahunajaran', string='Tahun Ajaran', required=True, default=lambda self: self.env['siswa_ocb11.tahunajaran'].search([('active','=',True)]))
     name = fields.Char('Nama', required=True)
     reg_number = fields.Char('Nomor Registrasi', required=True, default='New')
@@ -22,7 +23,7 @@ class calon_siswa(models.Model):
     country_id = fields.Many2one('res.country', string='Country')
     phone = fields.Char()
     mobile = fields.Char()    
-    jenjang_id = fields.Many2one('siswa_ocb11.jenjang', string='Jenjang')
+    jenjang_id = fields.Many2one('siswa_ocb11.jenjang', string='Jenjang', required=True)
     tanggal_registrasi = fields.Date('Tanggal Registrasi', required=True, default=datetime.today())
     tahunajaran_id = fields.Many2one('siswa_ocb11.tahunajaran', string='Tahun Diterima')
     induk = fields.Char(string='Internal Reference', required=False, copy=False, readonly=True, default="New")
@@ -56,6 +57,12 @@ class calon_siswa(models.Model):
     terbilang = fields.Char('Terbilang')
     satuan = ['', 'satu', 'dua', 'tiga', 'empat', 'lima', 'enam', 'tujuh',
           'delapan', 'sembilan', 'sepuluh', 'sebelas']
+    
+    @api.onchange('is_siswa_lama')
+    def onchange_is_siswa_lama(self):
+        print('onchange is siswa lama')
+        domain = {'siswa_id':[('tahunajaran_id','!=',self.tahunajaran_id.id),('is_siswa','=',True)]}
+        return {'domain':domain, 'value':{'siswa_id':[]}}    
 
     @api.onchange('siswa_id')
     def siswa_id_onchange(self):
@@ -80,7 +87,6 @@ class calon_siswa(models.Model):
         self.ibu = self.siswa_id.ibu
         self.pekerjaan_ibu_id = self.siswa_id.pekerjaan_ibu_id
         self.telp_ibu = self.siswa_id.telp_ibu
-        
 
     @api.model
     def create(self, vals):
@@ -94,160 +100,190 @@ class calon_siswa(models.Model):
         return result
     
     def action_confirm(self):
-        # register siswa to res.partner
-        if self.is_siswa_lama:
-            # update siswa lama
-            self.env['res.partner'].search([('id','=',self.siswa_id.id)]).write({
-                # 'rombels' : [(0, 0,  { 'rombel_id' : self.rombel_id.id, 'tahunajaran_id' : self.tahunajaran_id.id })],
-                # 'active_rombel_id' : self.rombel_id.id,
-                'is_siswa_lama' : True,
-                'calon_siswa_id' : self.id, 
-            })
-        else:
-            # insert into res_partner
-            new_siswa = self.env['res.partner'].create({
-                'is_customer' : 1,
-                'name' : self.name, 
-                'calon_siswa_id' : self.id, 
-                'street' : self.street,
-                'street2' : self.street2,
-                'zip' : self.zip,
-                'city' : self.city,
-                'state_id' : self.state_id.id,
-                'country_id' : self.country_id.id,
-                'phone' : self.phone,
-                'mobile' : self.mobile,
-                'tanggal_registrasi' : self.tanggal_registrasi,
-                'tahunajaran_id' : self.tahunajaran_id.id,
-                'nis' : self.nis,
-                'panggilan' : self.panggilan,
-                'jenis_kelamin' : self.jenis_kelamin,
-                'tanggal_lahir' : self.tanggal_lahir,
-                'tempat_lahir' : self.tempat_lahir, 
-                'alamat' : self.alamat,
-                'telp' : self.telp,
-                'ayah' : self.ayah,
-                'pekerjaan_ayah_id' : self.pekerjaan_ayah_id.id,
-                'telp_ayah' : self.telp_ayah,
-                'ibu' : self.ibu,
-                'pekerjaan_ibu_id' : self.pekerjaan_ibu_id.id,
-                'telp_ibu' : self.telp_ibu,
-                # 'rombels' : [(0, 0,  { 'rombel_id' : self.rombel_id.id, 'tahunajaran_id' : self.tahunajaran_id.id })],
-                # 'active_rombel_id' : self.rombel_id.id,
-                'is_siswa' : True,
-                'anak_ke' : self.anak_ke,
-                'dari_bersaudara' : self.dari_bersaudara
-            })
-            self.siswa_id = new_siswa.id 
-        self.state = 'reg'
-
-        # assign siswa biaya
-        # get tahunajaran_jenjang
-        ta_jenjang = self.env['siswa_ocb11.tahunajaran_jenjang'].search([('tahunajaran_id', '=', self.tahunajaran_id.id),
-        ('jenjang_id', '=', self.jenjang_id.id)
-        ])
-        # assign biaya to siswa
-        total_biaya = 0.0
-        for by in ta_jenjang.biayas:
-            if self.is_siswa_lama and by.biaya_id.is_siswa_baru_only:
-                print('skip')
+        # check pembayaran is set or not
+        if len(self.payment_lines) > 0:
+            # register siswa to res.partner
+            if self.is_siswa_lama:
+                # update siswa lama
+                self.env['res.partner'].search([('id','=',self.siswa_id.id)]).write({
+                    # 'rombels' : [(0, 0,  { 'rombel_id' : self.rombel_id.id, 'tahunajaran_id' : self.tahunajaran_id.id })],
+                    # 'active_rombel_id' : self.rombel_id.id,
+                    'is_siswa_lama' : True,
+                    'calon_siswa_id' : self.id, 
+                })
             else:
-                if by.biaya_id.is_bulanan:
-                    for bulan_index in range(1,13):
+                # insert into res_partner
+                new_siswa = self.env['res.partner'].create({
+                    'is_customer' : 1,
+                    'name' : self.name, 
+                    'calon_siswa_id' : self.id, 
+                    'street' : self.street,
+                    'street2' : self.street2,
+                    'zip' : self.zip,
+                    'city' : self.city,
+                    'state_id' : self.state_id.id,
+                    'country_id' : self.country_id.id,
+                    'phone' : self.phone,
+                    'mobile' : self.mobile,
+                    'tanggal_registrasi' : self.tanggal_registrasi,
+                    'tahunajaran_id' : self.tahunajaran_id.id,
+                    'nis' : self.nis,
+                    'panggilan' : self.panggilan,
+                    'jenis_kelamin' : self.jenis_kelamin,
+                    'tanggal_lahir' : self.tanggal_lahir,
+                    'tempat_lahir' : self.tempat_lahir, 
+                    'alamat' : self.alamat,
+                    'telp' : self.telp,
+                    'ayah' : self.ayah,
+                    'pekerjaan_ayah_id' : self.pekerjaan_ayah_id.id,
+                    'telp_ayah' : self.telp_ayah,
+                    'ibu' : self.ibu,
+                    'pekerjaan_ibu_id' : self.pekerjaan_ibu_id.id,
+                    'telp_ibu' : self.telp_ibu,
+                    # 'rombels' : [(0, 0,  { 'rombel_id' : self.rombel_id.id, 'tahunajaran_id' : self.tahunajaran_id.id })],
+                    # 'active_rombel_id' : self.rombel_id.id,
+                    'is_siswa' : True,
+                    'anak_ke' : self.anak_ke,
+                    'dari_bersaudara' : self.dari_bersaudara
+                })
+                # self.siswa_id = new_siswa.id 
+                self.registered_siswa_id = new_siswa.id
+
+            # update state
+            self.state = 'reg'
+
+            # assign siswa biaya
+            # get tahunajaran_jenjang
+            ta_jenjang = self.env['siswa_ocb11.tahunajaran_jenjang'].search([('tahunajaran_id', '=', self.tahunajaran_id.id),
+            ('jenjang_id', '=', self.jenjang_id.id)
+            ])
+            
+            # assign biaya to siswa
+            total_biaya = 0.0
+            if self.is_siswa_lama:
+                id_siswa = self.siswa_id.id 
+            else:
+                id_siswa = new_siswa.id
+
+            for by in ta_jenjang.biayas:
+                if self.is_siswa_lama and by.biaya_id.is_siswa_baru_only:
+                    print('skip')
+                else:
+                    print('JENJANG ID : ' + str(self.jenjang_id.id))
+                    if by.biaya_id.is_bulanan:
+                        for bulan_index in range(1,13):
+                            harga = by.harga
+                            
+                            if by.is_different_by_gender:
+                                if self.jenis_kelamin == 'perempuan':
+                                    harga = by.harga_alt
+
+                            self.env['siswa_keu_ocb11.siswa_biaya'].create({
+                                'name' : by.biaya_id.name + ' ' + calendar.month_name[bulan_index],
+                                'siswa_id' : id_siswa,
+                                'tahunajaran_id' : self.tahunajaran_id.id,
+                                'biaya_id' : by.biaya_id.id,
+                                'bulan' : bulan_index,
+                                'harga' : harga,
+                                'amount_due' : harga,
+                                'jenjang_id' : self.jenjang_id.id
+                            })
+                            total_biaya += harga
+                    else:
                         harga = by.harga
+                        
                         if by.is_different_by_gender:
                             if self.jenis_kelamin == 'perempuan':
                                 harga = by.harga_alt
+
                         self.env['siswa_keu_ocb11.siswa_biaya'].create({
-                            'name' : by.biaya_id.name + ' ' + calendar.month_name[bulan_index],
-                            'siswa_id' : new_siswa.id,
+                            'name' : by.biaya_id.name,
+                            'siswa_id' : id_siswa,
                             'tahunajaran_id' : self.tahunajaran_id.id,
                             'biaya_id' : by.biaya_id.id,
-                            'bulan' : bulan_index,
                             'harga' : harga,
                             'amount_due' : harga,
                             'jenjang_id' : self.jenjang_id.id
                         })
                         total_biaya += harga
-                else:
-                    harga = by.harga
-                    if by.is_different_by_gender:
-                        if self.jenis_kelamin == 'perempuan':
-                            harga = by.harga_alt
-                    self.env['siswa_keu_ocb11.siswa_biaya'].create({
-                        'name' : by.biaya_id.name,
-                        'siswa_id' : new_siswa.id,
-                        'tahunajaran_id' : self.tahunajaran_id.id,
-                        'biaya_id' : by.biaya_id.id,
-                        'harga' : harga,
-                        'amount_due' : harga,
-                        'jenjang_id' : self.jenjang_id.id
-                    })
-                    total_biaya += harga
+                        
+            # set total_biaya dan amount_due
+            # total_biaya = sum(by.harga for by in self.biayas)
+            print('ID SISWA : ' + str(id_siswa))
+            res_partner_siswa = self.env['res.partner'].search([('id','=',id_siswa)])
+            self.env['res.partner'].search([('id','=',id_siswa)]).write({
+                'total_biaya' : total_biaya,
+                'amount_due_biaya' : res_partner_siswa.amount_due_biaya + total_biaya,
+            })         
+
+            # add pembayaran
+            pembayaran = self.env['siswa_keu_ocb11.pembayaran'].create({
+                'tanggal' : self.tanggal_registrasi ,
+                'tahunajaran_id' : self.tahunajaran_id.id,
+                'siswa_id' : id_siswa,
+            })
+
+            # reset pembayaran_lines
+            pembayaran.pembayaran_lines.unlink()
+            pembayaran.total = 0
+
+            total_bayar = 0.0
+            for pay in self.payment_lines:
+
+                print('Payment Lines : ')
+                print('harga : ' + str(pay.harga))
+                print('dibayar : ' + str(pay.dibayar))
+                print('biaya_id : ' + str(pay.biaya_id.id))
+
+
+                # get siswa_biaya
+                if pay.biaya_id:
+                    if pay.biaya_id.is_bulanan:
+                        pay_biaya_id = self.env['siswa_keu_ocb11.siswa_biaya'].search([
+                                    ('siswa_id','=',id_siswa),
+                                    ('tahunajaran_id','=',self.tahunajaran_id.id),
+                                    ('biaya_id','=',pay.biaya_id.id),
+                                    ('tahunajaran_id','=',self.tahunajaran_id.id),
+                                    ('bulan','=',pay.bulan),
+                                    ]).id
+                    else:
+                        pay_biaya_id = self.env['siswa_keu_ocb11.siswa_biaya'].search([
+                                    ('siswa_id','=',id_siswa),
+                                    ('tahunajaran_id','=',self.tahunajaran_id.id),
+                                    ('biaya_id','=',pay.biaya_id.id),
+                                    ('tahunajaran_id','=',self.tahunajaran_id.id),
+                                    ]).id
                     
-        # set total_biaya dan amount_due
-        # total_biaya = sum(by.harga for by in self.biayas)
-        self.env['res.partner'].search([('id','=',new_siswa.id)]).write({
-            'total_biaya' : total_biaya,
-            'amount_due_biaya' : total_biaya,
-        })         
+                    pembayaran.pembayaran_lines =  [(0, 0,  { 
+                                            'biaya_id' : pay_biaya_id, 
+                                            'bayar' : pay.dibayar 
+                                            })]
+                    total_bayar += pay.dibayar
+                
+                print('pay_biaya_id : ' + str(pay_biaya_id))
+                print('-------------------')
 
-        # add pembayaran
-        pembayaran = self.env['siswa_keu_ocb11.pembayaran'].create({
-            'tanggal' : self.tanggal_registrasi ,
-            'tahunajaran_id' : self.tahunajaran_id.id,
-            'siswa_id' : new_siswa.id,
-        })
+            # raise exceptions.except_orm(_('Warning'), _('TEST ERROR'))
 
-        # reset pembayaran_lines
-        pembayaran.pembayaran_lines.unlink()
-        pembayaran.total = 0
+            # confirm pembayaran 
+            pembayaran.action_confirm()
 
-        total_bayar = 0.0
-        for pay in self.payment_lines:
-            # get siswa_biaya
-            if pay.biaya_id:
-                if pay.biaya_id.is_bulanan:
-                    pay_biaya_id = self.env['siswa_keu_ocb11.siswa_biaya'].search([
-                                ('siswa_id','=',new_siswa.id),
-                                ('tahunajaran_id','=',self.tahunajaran_id.id),
-                                ('biaya_id','=',pay.biaya_id.id),
-                                ('tahunajaran_id','=',self.tahunajaran_id.id),
-                                ('bulan','=',pay.bulan),
-                                ]).id
-                else:
-                    pay_biaya_id = self.env['siswa_keu_ocb11.siswa_biaya'].search([
-                                ('siswa_id','=',new_siswa.id),
-                                ('tahunajaran_id','=',self.tahunajaran_id.id),
-                                ('biaya_id','=',pay.biaya_id.id),
-                                ('tahunajaran_id','=',self.tahunajaran_id.id),
-                                ]).id
-                # print('Pembayaran Lines Insert')
-                # print(pay_biaya_id)
-                # print(pay.dibayar)
-                # print('-----------')
-                pembayaran.pembayaran_lines =  [(0, 0,  { 
-                                        'biaya_id' : pay_biaya_id, 
-                                        'bayar' : pay.dibayar 
-                                        })]
-                total_bayar += pay.dibayar
-        # confirm pembayaran 
-        pembayaran.action_confirm()
+            # set terbilang
+            if total_bayar == 0:
+                self.terbilang = 'nol'
+            else:
+                t = self.terbilang_(total_bayar)
+                while '' in t:
+                    t.remove('')
+                self.terbilang = ' '.join(t) 
+            
+            self.terbilang += ' Rupiah'
+            # set total
+            self.total = total_bayar
 
-        # set terbilang
-        if total_bayar == 0:
-            self.terbilang = 'nol'
+            # raise exceptions.except_orm(_('Warning'), _('You can not delete Done state data'))
         else:
-            t = self.terbilang_(total_bayar)
-            while '' in t:
-                t.remove('')
-            self.terbilang = ' '.join(t) 
-        
-        self.terbilang += ' Rupiah'
-        # set total
-        self.total = total_bayar
-
-        # raise exceptions.except_orm(_('Warning'), _('You can not delete Done state data'))
+            raise exceptions.except_orm(_('Warning'), _('Can not confirm this registration, complete payment first!'))
     
     def terbilang_(self, n):
         if n >= 0 and n <= 11:
@@ -274,3 +310,30 @@ class calon_siswa(models.Model):
     def action_print_kwitansi(self):
         # return self.env.ref('siswa_psb_ocb11.report_kwitansi_registrasi_action').report_action(self)
         return self.env.ref('siswa_psb_ocb11.report_bukti_pembayaran_registrasi_action').report_action(self)
+
+    def action_reset(self):
+        # reset confirmed calon siswa
+        
+        # remove pembayaran
+        pembayaran = self.env['siswa_keu_ocb11.pembayaran'].search([('siswa_id','=',self.registered_siswa_id.id)])
+        pembayaran.action_cancel()
+        pembayaran.unlink()
+        print('Pembayaran Deleted')
+        # --------------------------------        
+        
+        # remove siswa biaya
+        siswa_biaya = self.env['siswa_keu_ocb11.siswa_biaya'].search([('siswa_id','=',self.registered_siswa_id.id)])
+        siswa_biaya.unlink()
+        print('Siswa Deleted')
+
+        # remove res_partner
+        self.env['res.partner'].search([('id','=',self.registered_siswa_id.id)]).unlink()
+
+        # update calon_siswa state
+        self.state = 'draft'
+
+        # raise exceptions.except_orm(_('Warning'), _('Reset Succesfull'))
+        
+        
+
+
