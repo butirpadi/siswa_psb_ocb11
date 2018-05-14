@@ -313,21 +313,30 @@ class calon_siswa(models.Model):
 
     def action_reset(self):
         # reset confirmed calon siswa
+        id_siswa = self.registered_siswa_id.id
+        if self.is_siswa_lama:
+            id_siswa = self.siswa_id.id
         
         # remove pembayaran
-        pembayaran = self.env['siswa_keu_ocb11.pembayaran'].search([('siswa_id','=',self.registered_siswa_id.id)])
-        pembayaran.action_cancel()
-        pembayaran.unlink()
-        print('Pembayaran Deleted')
+        pembayaran = self.env['siswa_keu_ocb11.pembayaran'].search([
+                                                            ('siswa_id','=',id_siswa),
+                                                            ('tahunajaran_id','=',self.tahunajaran_id.id)
+                                                            ])
+
+        if pembayaran:
+            pembayaran.action_cancel()
+            pembayaran.unlink()
+            print('Pembayaran Deleted')
         # --------------------------------        
         
         # remove siswa biaya
-        siswa_biaya = self.env['siswa_keu_ocb11.siswa_biaya'].search([('siswa_id','=',self.registered_siswa_id.id)])
+        siswa_biaya = self.env['siswa_keu_ocb11.siswa_biaya'].search([('siswa_id','=',id_siswa)])
         siswa_biaya.unlink()
         print('Siswa Deleted')
 
         # remove res_partner
-        self.env['res.partner'].search([('id','=',self.registered_siswa_id.id)]).unlink()
+        if not self.is_siswa_lama:
+            self.env['res.partner'].search([('id','=',id_siswa)]).unlink()
 
         # update calon_siswa state
         self.state = 'draft'
