@@ -203,6 +203,7 @@ class calon_siswa(models.Model):
         pembayaran.pembayaran_lines.unlink()
         pembayaran.total = 0
 
+        total_bayar = 0.0
         for pay in self.payment_lines:
             # get siswa_biaya
             if pay.biaya_id:
@@ -229,21 +230,22 @@ class calon_siswa(models.Model):
                                         'biaya_id' : pay_biaya_id, 
                                         'bayar' : pay.dibayar 
                                         })]
+                total_bayar += pay.dibayar
         # confirm pembayaran 
         pembayaran.action_confirm()
 
         # set terbilang
-        if total_biaya == 0:
+        if total_bayar == 0:
             self.terbilang = 'nol'
         else:
-            t = self.terbilang_(total_biaya)
+            t = self.terbilang_(total_bayar)
             while '' in t:
                 t.remove('')
             self.terbilang = ' '.join(t) 
         
         self.terbilang += ' Rupiah'
         # set total
-        self.total = total_biaya
+        self.total = total_bayar
 
         # raise exceptions.except_orm(_('Warning'), _('You can not delete Done state data'))
     
@@ -270,4 +272,5 @@ class calon_siswa(models.Model):
 
     
     def action_print_kwitansi(self):
-        return self.env.ref('siswa_psb_ocb11.report_kwitansi_registrasi_action').report_action(self)
+        # return self.env.ref('siswa_psb_ocb11.report_kwitansi_registrasi_action').report_action(self)
+        return self.env.ref('siswa_psb_ocb11.report_bukti_pembayaran_registrasi_action').report_action(self)
