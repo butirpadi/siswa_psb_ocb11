@@ -130,7 +130,12 @@ class distribusi_siswa(models.Model):
         #     'name' : 'Distribusi Siswa ' + result.jenjang_id.name + ' '  + result.tahunajaran_id.name
         # })
         # add calon siswa
-        calon_siswas = self.env['siswa_psb_ocb11.calon_siswa'].search(['&','&',('tahunajaran_id','=',result.tahunajaran_id.id),('jenjang_id','=',result.jenjang_id.id),('is_distributed','=',False)])
+        calon_siswas = self.env['siswa_psb_ocb11.calon_siswa'] \
+                        .search(['&','&','&',('tahunajaran_id','=',result.tahunajaran_id.id),
+                                        ('jenjang_id','=',result.jenjang_id.id),
+                                        ('is_distributed','=',False),
+                                        ('state','=','reg'),
+                                ])
         reg_cs = []
         for cs in calon_siswas:
             print(cs.name)
