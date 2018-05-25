@@ -319,16 +319,29 @@ class calon_siswa(models.Model):
         
         # remove pembayaran
         pembayaran = self.env['siswa_keu_ocb11.pembayaran'].search([
-                                                            ('siswa_id','=',id_siswa),
-                                                            ('tahunajaran_id','=',self.tahunajaran_id.id)
-                                                            ])
+                                ('siswa_id','=',id_siswa),
+                                ('tahunajaran_id','=',self.tahunajaran_id.id)
+                            ])
 
         if pembayaran:
-            pembayaran.action_cancel()
-            pembayaran.unlink()
-            print('Pembayaran Deleted')
+            for pb in pembayaran:
+                if pb.state == 'paid':
+                    pb.action_cancel()
+                pb.unlink()
+                print('Pembayaran Deleted')
         # --------------------------------        
         
+        # remove tabungan siswa
+        print('Delete Data Tabungan : ')
+        tabungan = self.env['siswa_tab_ocb11.tabungan'].search([
+                                ('siswa_id','=',id_siswa)
+                            ])
+        pprint(tabungan)
+        for tab in tabungan:
+            if tab.state == 'post':
+                tab.action_cancel()
+            tab.unlink()
+
         # remove siswa biaya
         siswa_biaya = self.env['siswa_keu_ocb11.siswa_biaya'].search([('siswa_id','=',id_siswa)])
         siswa_biaya.unlink()
