@@ -94,7 +94,7 @@
                                         <field name="calon_siswa_id" invisible="1" />
                                         <field name="biaya_id" />
                                         <field name="is_bulanan" invisible="1" />
-                                        <field name="bulan" attrs="{'readonly':[('is_bulanan', '=', False)]}" />
+                                        <field name="bulan" attrs="{'readonly':[('is_bulanan', '=', False)], 'required':[('is_bulanan', '=', True)]}" />
                                         <field name="harga" />
                                         <field name="dibayar" sum="Total Bayar" />
                                     </tree>

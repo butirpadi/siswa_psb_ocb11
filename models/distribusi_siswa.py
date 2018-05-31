@@ -63,55 +63,18 @@ class distribusi_siswa(models.Model):
                     'rombels' : [(0, 0,  { 'rombel_id' : cs.rombel_id.id, 'tahunajaran_id' : cs.tahunajaran_id.id })],
                     'active_rombel_id' : cs.rombel_id.id,
                 })
-
-        #     if cs.is_siswa_lama:
-        #         # update siswa lama
-        #         self.env['res.partner'].search([('id','=',cs.siswa_id.id)]).write({
-        #             'rombels' : [(0, 0,  { 'rombel_id' : cs.rombel_id.id, 'tahunajaran_id' : cs.tahunajaran_id.id })],
-        #             'active_rombel_id' : cs.rombel_id.id,
-        #             'is_siswa_lama' : True,
-        #             'calon_siswa_id' : cs.id, 
-        #         })
-        #     else:
-        #         # insert into res_partner
-        #         self.env['res.partner'].create({
-        #             'is_customer' : 1,
-        #             'name' : cs.name, 
-        #             'calon_siswa_id' : cs.id, 
-        #             'street' : cs.street,
-        #             'street2' : cs.street2,
-        #             'zip' : cs.zip,
-        #             'city' : cs.city,
-        #             'state_id' : cs.state_id.id,
-        #             'country_id' : cs.country_id.id,
-        #             'phone' : cs.phone,
-        #             'mobile' : cs.mobile,
-        #             'tanggal_registrasi' : cs.tanggal_registrasi,
-        #             'tahunajaran_id' : cs.tahunajaran_id.id,
-        #             'nis' : cs.nis,
-        #             'panggilan' : cs.panggilan,
-        #             'jenis_kelamin' : cs.jenis_kelamin,
-        #             'tanggal_lahir' : cs.tanggal_lahir,
-        #             'tempat_lahir' : cs.tempat_lahir, 
-        #             'alamat' : cs.alamat,
-        #             'telp' : cs.telp,
-        #             'ayah' : cs.ayah,
-        #             'pekerjaan_ayah_id' : cs.pekerjaan_ayah_id.id,
-        #             'telp_ayah' : cs.telp_ayah,
-        #             'ibu' : cs.ibu,
-        #             'pekerjaan_ibu_id' : cs.pekerjaan_ibu_id.id,
-        #             'telp_ibu' : cs.telp_ibu,
-        #             'rombels' : [(0, 0,  { 'rombel_id' : cs.rombel_id.id, 'tahunajaran_id' : cs.tahunajaran_id.id })],
-        #             'active_rombel_id' : cs.rombel_id.id,
-        #             'is_siswa' : True,
-        #             'anak_ke' : cs.anak_ke,
-        #             'dari_bersaudara' : cs.dari_bersaudara
-        #         })
+        
             # update calon_siswa
             cs.is_distributed = True
+            
         # update state dsitributed
         self.is_distributed = True
         self.state = 'done'
+
+        # compute rombel_dashboard
+        rb_dashboards = self.env['siswa_ocb11.rombel_dashboard'].search([('rombel_id','ilike','%')])
+        for rb_dash in rb_dashboards:
+            rb_dash.lets_compute_jumlah_siswa()
        
     def action_manual_distribute(self):
         print('manual distribute')

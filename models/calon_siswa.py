@@ -29,7 +29,7 @@ class calon_siswa(models.Model):
     induk = fields.Char(string='Internal Reference', required=False, copy=False, readonly=True, default="New")
     nis = fields.Char(string="NIS", required=False)
     panggilan = fields.Char(string="Panggilan")
-    jenis_kelamin = fields.Selection([('laki', 'Laki-laki'), ('perempuan', 'Perempuan')], string='Jenis Kelamin', required=False)
+    jenis_kelamin = fields.Selection([('laki', 'Laki-laki'), ('perempuan', 'Perempuan')], string='Jenis Kelamin', required=True)
     tanggal_lahir = fields.Date(string='Tanggal Lahir', required=False)
     tempat_lahir = fields.Char(string='Tempat Lahir', required=False)
     alamat = fields.Char(string='Alamat')
@@ -353,6 +353,13 @@ class calon_siswa(models.Model):
 
         # update calon_siswa state
         self.state = 'draft'
+
+        # Recompute Tagihan Siswa Dashboard/ Keuangan Dashboard
+        dash_keuangan_id = self.env['ir.model.data'].search([('name','=','default_dashboard_pembayaran')]).res_id
+        dash_keuangan = self.env['siswa_keu_ocb11.keuangan_dashboard'].search([('id','=',dash_keuangan_id)])
+        for dash in dash_keuangan:
+            dash.compute_keuangan()  
+        print('Recompute Keuangan Dashboard done')
 
         # raise exceptions.except_orm(_('Warning'), _('Reset Succesfull'))
         

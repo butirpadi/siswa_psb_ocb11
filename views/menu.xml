@@ -1,6 +1,6 @@
 <odoo>
     <data>
-        <menuitem name="PSB" id="siswa_psb_ocb11.root_menu"/>
+        <menuitem name="PSB" id="siswa_psb_ocb11.root_menu" sequence="4" />
 
         <menuitem name="Operations" id="siswa_psb_ocb11.categories_menu_registrasi" parent="siswa_psb_ocb11.root_menu" sequence="1" />
 

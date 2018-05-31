@@ -48,6 +48,8 @@ class calon_siswa_biaya(models.Model):
                     if by.biaya_id.is_different_by_gender:
                         if rec.calon_siswa_id.jenis_kelamin == 'perempuan':
                             rec.harga = by.harga_alt
+                            print('Harga Alternatif : ' + str(rec.harga))
                     # if by.biaya_id.is_bulanan:
-                    rec.dibayar = by.harga
+                    rec.dibayar = rec.harga
+                    print('Harga : ' + str(rec.dibayar))
                     
