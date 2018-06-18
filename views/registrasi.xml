@@ -51,10 +51,10 @@
                                         <!-- <field name="formulir_tahunajaran_id"/> -->
                                         <field name="jenjang_id" options="{'no_create':True,'no_edit':True,'no_create_edit': True,'no_open':True}" />
                                         <field name="panggilan" />
-                                        <field name="nis" />
                                         <field name="jenis_kelamin" />
                                         <field name="tempat_lahir" />
                                         <field name="tanggal_lahir" />
+                                        <field name="nis" />
                                         <field name="tahunajaran_id" options="{'no_create':True,'no_edit':True,'no_create_edit': True,'no_open':True}" context="{'active_test': False}" invisible="1" />
                                     </group>
                                     <group>

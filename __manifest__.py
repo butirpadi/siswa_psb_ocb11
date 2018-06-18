@@ -24,7 +24,8 @@
 
     # always loaded
     'data': [
-        # 'security/ir.model.access.csv',
+        'security/user_groups.xml',
+        'security/ir.model.access.csv',
         'data/ir_sequence_data.xml',
         'reports/report_formulir.xml',
         'reports/report_kwitansi_formulir.xml',
