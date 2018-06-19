@@ -29,7 +29,7 @@
                     <header>
                         <button name="action_confirm" type="object" string="Confirm" attrs="{'invisible':['|',('state', '=', 'reg'),('name', '=', '')]}" class="btn btn-primary" />
                         <button name="action_print_kwitansi" type="object" string="Print" attrs="{'invisible':['|',('state', '=', 'draft'),('name', '=', '')]}" class="btn" />
-                        <button name="action_reset" type="object" string="Reset" attrs="{'invisible':[('state', '!=', 'reg')]}" class="btn btn-danger" confirm="Are you sure to do this action?" />
+                        <button name="action_reset" type="object" string="Reset" attrs="{'invisible':[('state', '!=', 'reg')]}" class="btn btn-danger" confirm="Are you sure to do this action?" groups="siswa_psb_ocb11.siswa_psb_group_admin" />
                         <field name="state" widget="statusbar" statusbar_visible="draft,reg"/>
                     </header>
                     <sheet>
@@ -95,7 +95,7 @@
                                         <field name="biaya_id" />
                                         <field name="is_bulanan" invisible="1" />
                                         <field name="bulan" attrs="{'readonly':[('is_bulanan', '=', False)], 'required':[('is_bulanan', '=', True)]}" />
-                                        <field name="harga" />
+                                        <field name="harga" sum="Total Harga" />
                                         <field name="dibayar" sum="Total Bayar" />
                                     </tree>
                                 </field>
