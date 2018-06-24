@@ -5,3 +5,4 @@ from . import formulir
 from . import calon_siswa_biaya
 from . import calon_siswa
 from . import distribusi_siswa
+from . import biaya_registrasi

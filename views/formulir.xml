@@ -6,7 +6,7 @@
         <field name="model">siswa_psb_ocb11.formulir</field>
         <field name="arch" type="xml">
             <search string="Search Formulir">
-                <field name="name" string="Nomor Formulir" filter_domain="['|'('name','ilike',self),
+                <field name="name" string="Nomor Formulir" filter_domain="['|',('name','ilike',self),
                                                                     ('nama_calon','ilike',self)
                                                                     ]"/>
                 <group expand="0" string="Group By">

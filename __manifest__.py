@@ -34,6 +34,7 @@
         'views/registrasi.xml',
         # 'views/wizard_distribusi_siswa_view.xml',
         'views/distribusi_siswa_view.xml',
+        'views/biaya_registrasi.xml',
         'views/menu.xml',
         # 'views/templates.xml',
     ],

@@ -1,0 +1,92 @@
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="siswa_psb_ocb11.biaya_ta_jenjang_list">
+            <field name="name">siswa_psb_ocb11_biaya_ta_jenjang_list</field>
+            <field name="model">siswa_keu_ocb11.biaya_ta_jenjang</field>
+            <field name="arch" type="xml">
+                <tree >
+                    <field name="biaya_id"/>
+                    <field name="harga" />
+                    <field name="harga_alt" />
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_biaya_registrasi_filter" model="ir.ui.view">
+        <field name="name">biaya_registrasi.list.select</field>
+        <field name="model">siswa_psb_ocb11.biaya_registrasi</field>
+        <field name="arch" type="xml">
+            <search string="Search Biaya Registrasi">
+                <field name="name" string="Name" filter_domain="['|','|',
+                                                                    ('name','ilike',self),
+                                                                    ('tahunajaran_id','ilike',self),
+                                                                    ('jenjang_id','ilike',self),
+                                                                    ]"/>
+                <group expand="0" string="Group By">
+                    <filter name="group_tahunajaran_id" string="Tahun Ajaran" domain="[]" context="{'group_by':'tahunajaran_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+        <record model="ir.ui.view" id="siswa_psb_ocb11.biaya_registrasi_list">
+            <field name="name">siswa_psb_ocb11_biaya_registrasi_list</field>
+            <field name="model">siswa_psb_ocb11.biaya_registrasi</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="tahunajaran_id" context="{'active_test': False}"/>
+                    <field name="jenjang_id" />
+                </tree>
+            </field>
+        </record>
+
+        <record id="siswa_psb_ocb11.biaya_registrasi_form" model="ir.ui.view">
+            <field name="name">biaya_registrasi.ocb11.form</field>
+            <field name="model">siswa_psb_ocb11.biaya_registrasi</field>
+            <field name="arch" type="xml">
+                <form string="formulir" class="o_sale_order">
+                    <!-- <header>
+                        <button name="action_print" type="object" string="Cetak Formulir" attrs="{'invisible':[('name', '=', 'New')]}" class="btn btn-default" />
+                        <button name="action_print_kwitansi" type="object" string="Cetak Kwitansi" attrs="{'invisible':[('name', '=', 'New')]}" class="btn btn-default" />
+                    </header> -->
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" readonly="1"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="tahunajaran_id" options='{"no_open": True, "no_edit":True, "no_create": True, "no_create_edit":True}' context="{'active_test': False}" attrs="{'readonly':[('name', '!=', 'New')]}" />
+                            </group>
+                            <group>
+                                <field string="Jenjang" name="tahunajaran_jenjang_id" options='{"no_open": True, "no_edit":True, "no_create": True, "no_create_edit":True}' attrs="{'readonly':[('name', '!=', 'New')]}" />
+                                <field name="jenjang_id" invisible="1" />
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Biaya" >
+                                <field name="biaya_ta_jenjang_ids" options='{"no_open": True, "no_edit":True, "no_create": True, "no_create_edit":True}' >
+                                    <tree >
+                                        <field name="biaya_id" options='{"no_open": True, "no_edit":True, "no_create": True, "no_create_edit":True}' />
+                                        <field name="harga" sum="Total Harga" />
+                                        <field name="harga_alt" sum="Total Harga (Alt)" />
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        
+        <record model="ir.actions.act_window" id="siswa_psb_ocb11.biaya_registrasi_action_window">
+            <field name="name">Biaya Registrasi</field>
+            <field name="res_model">siswa_psb_ocb11.biaya_registrasi</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{'search_default_group_tahunajaran_id':1}</field>
+        </record>
+
+
+    </data>
+</odoo>

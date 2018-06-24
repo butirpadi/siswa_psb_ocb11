@@ -89,10 +89,16 @@
                                 </group>
                             </page>
                             <page name="page_pembayaran" string="Pembayaran" >
+                                <group>
+                                    <group>
+                                        <button name="generate_pembayaran" string="Generate Pembayaran" type="object" />
+                                    </group>
+                                    <group></group>
+                                </group>
                                 <field name="payment_lines">
                                     <tree editable="bottom" >
                                         <field name="calon_siswa_id" invisible="1" />
-                                        <field name="biaya_id" />
+                                        <field name="biaya_id" options='{"no_open": True, "no_edit":True, "no_create": True, "no_create_edit":True}' />
                                         <field name="is_bulanan" invisible="1" />
                                         <field name="bulan" attrs="{'readonly':[('is_bulanan', '=', False)], 'required':[('is_bulanan', '=', True)]}" />
                                         <field name="harga" sum="Total Harga" />
