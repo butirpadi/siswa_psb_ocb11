@@ -66,11 +66,13 @@
                         </group>
                         <notebook>
                             <page string="Biaya" >
-                                <field name="biaya_ta_jenjang_ids" options='{"no_open": True, "no_edit":True, "no_create": True, "no_create_edit":True}' >
-                                    <tree >
-                                        <field name="biaya_id" options='{"no_open": True, "no_edit":True, "no_create": True, "no_create_edit":True}' />
-                                        <field name="harga" sum="Total Harga" />
-                                        <field name="harga_alt" sum="Total Harga (Alt)" />
+                                <field name="biaya_ta_jenjang_ids" options='{"no_open": True,"no_create": True}' >
+                                    <tree editable="bottom"  >
+                                        <field name="biaya_id" options='{"no_open": True, "no_edit":True, "no_create": True, "no_create_edit":True}' readonly="1" />
+                                        <field name="is_bulanan" options='{"no_open": True, "no_edit":True, "no_create": True, "no_create_edit":True}' invisible="1" />
+                                        <field name="bulan" attrs="{'readonly':[('is_bulanan', '=', False)], 'required':[('is_bulanan', '=', True)]}" />
+                                        <field name="harga" sum="Total Harga" readonly="1" />
+                                        <field name="harga_alt" sum="Total Harga (Alt)" readonly="1" />
                                     </tree>
                                 </field>
                             </page>

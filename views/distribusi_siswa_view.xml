@@ -50,7 +50,7 @@
                         </div>
                         <group>
                             <group>
-                                <field name="tahunajaran_id" options="{'no_create_edit': True,'no_open':True,'no_create':True,'no_edit':True}" attrs="{'readonly':[('name', '!=', '0')]}"/>
+                                <field name="tahunajaran_id" options="{'no_create_edit': True,'no_open':True,'no_create':True,'no_edit':True}" attrs="{'readonly':[('name', '!=', '0')]}" context="{'active_test': False}"/>
                             </group>
                             <group>
                                 <field name="jenjang_id" options="{'no_create_edit': True,'no_open':True,'no_create':True,'no_edit':True}" attrs="{'readonly':[('name', '!=', '0')]}" />

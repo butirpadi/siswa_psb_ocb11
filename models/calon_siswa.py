@@ -363,6 +363,27 @@ class calon_siswa(models.Model):
 
         # raise exceptions.except_orm(_('Warning'), _('Reset Succesfull'))
         
+    def generate_pembayaran(self):
+        # clear data sebelumnya
+        self.payment_lines.unlink()
+
+        # get biaya registrasi
+        biaya_registrasi_ids = self.env['siswa_psb_ocb11.biaya_registrasi'].search([
+            ('tahunajaran_id', '=', self.tahunajaran_id.id),
+            ('jenjang_id', '=', self.jenjang_id.id),
+        ])
+
+        for by in biaya_registrasi_ids[0].biaya_ta_jenjang_ids:
+            harga = by.harga
+            if by.biaya_id.is_different_by_gender and self.jenis_kelamin == 'perempuan':
+                    harga = by.harga_alt
+            self.payment_lines =  [(0, 0,  { 
+                                    'biaya_id' : by.biaya_id.id, 
+                                    'bulan' : by.bulan,
+                                    'harga' : harga,
+                                    'dibayar' : harga,
+                                    })]
+
         
 
 
