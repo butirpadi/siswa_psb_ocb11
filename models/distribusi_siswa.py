@@ -21,8 +21,13 @@ class distribusi_siswa(models.Model):
     def action_reset(self):
         # reset rombels on calon_siswa_ids
         for cs in self.calon_siswa_ids:
-            cs.rombel_id = None
-            cs.is_distributed = False
+            # Update Siswa
+            # cs.rombel_id = None
+            # cs.is_distributed = False
+            self.env['siswa_psb_ocb11.calon_siswa'].search([('id', '=', cs.id)]).write({
+                'rombel_id' : None,
+                'is_distributed' : False
+            })
             # get siswa
             siswa = self.env['res.partner'].search([('calon_siswa_id','=',cs.id)])
             # delete from rombel_siswa            
