@@ -64,6 +64,23 @@ class calon_siswa(models.Model):
         # domain = {'siswa_id':[('tahunajaran_id','!=',self.tahunajaran_id.id),('is_siswa','=',True)]}
         domain = {'siswa_id':[('is_siswa','=',True)]}
         return {'domain':domain, 'value':{'siswa_id':[]}}    
+    
+    @api.onchange('siswa_id')
+    def onchange_siswa_id(self):
+        # get prev tahunajaran
+        prev_ta = self.env['siswa_ocb11.tahunajaran'].search([
+            ('sort_order', '=', self.tahunajaran_id.sort_order - 1)
+        ])
+
+        # get rombel siswa
+        rombel_siswa = self.env['siswa_ocb11.rombel_siswa'].search([
+            ('tahunajaran_id', '=', prev_ta.id),
+            ('siswa_id', '=', self.siswa_id.id),
+        ]).rombel_id
+
+        # filter jenjang 
+        domain = {'jenjang_id':[('order','>',rombel_siswa.jenjang_id.order )]}
+        return {'domain':domain, 'value':{'jenjang_id':[]}} 
 
     @api.onchange('siswa_id')
     def siswa_id_onchange(self):
