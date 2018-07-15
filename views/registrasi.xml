@@ -46,7 +46,7 @@
                                         <!-- <field name="formulir_id" options="{'no_create':True,'no_edit':True,'no_create_edit': True,'no_open':True}" /> -->
                                         <field name="is_siswa_lama"  />
                                         <field name="siswa_id" attrs="{'invisible':[('is_siswa_lama', '=', False)], 'required':[('is_siswa_lama','=',True)] }" options="{'no_create':True,'no_edit':True,'no_create_edit': True,'no_open':True}" />
-                                        <field name="name" />
+                                        <field name="name" attrs="{'invisible':[('is_siswa_lama', '=', True)] }" />
                                         <!-- <field name="formulir_tahunajaran_id"/> -->
                                         <field name="jenjang_id" options="{'no_create':True,'no_edit':True,'no_create_edit': True,'no_open':True}" />
                                         <field name="panggilan" />

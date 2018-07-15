@@ -61,7 +61,8 @@ class calon_siswa(models.Model):
     @api.onchange('is_siswa_lama')
     def onchange_is_siswa_lama(self):
         print('onchange is siswa lama')
-        domain = {'siswa_id':[('tahunajaran_id','!=',self.tahunajaran_id.id),('is_siswa','=',True)]}
+        # domain = {'siswa_id':[('tahunajaran_id','!=',self.tahunajaran_id.id),('is_siswa','=',True)]}
+        domain = {'siswa_id':[('is_siswa','=',True)]}
         return {'domain':domain, 'value':{'siswa_id':[]}}    
 
     @api.onchange('siswa_id')
