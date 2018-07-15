@@ -5,9 +5,14 @@
         <menuitem name="Operations" id="siswa_psb_ocb11.categories_menu_registrasi" parent="siswa_psb_ocb11.root_menu" sequence="1" />
 
         <!-- <menuitem name="Formulir" id="siswa_psb_ocb11.action_menu_formulir" parent="siswa_psb_ocb11.categories_menu_registrasi" action="siswa_psb_ocb11.formulir_action_window" sequence="1"/> -->
-        <menuitem name="Biaya Registrasi" id="siswa_psb_ocb11.action_menu_biaya_registrasi" parent="siswa_psb_ocb11.categories_menu_registrasi" action="siswa_psb_ocb11.biaya_registrasi_action_window" sequence="1"/>
+        <!-- <menuitem name="Biaya Registrasi" id="siswa_psb_ocb11.action_menu_biaya_registrasi" parent="siswa_psb_ocb11.categories_menu_registrasi" action="siswa_psb_ocb11.biaya_registrasi_action_window" sequence="1"/> -->
         <menuitem name="Registrasi" id="siswa_psb_ocb11.action_menu_registrasi" parent="siswa_psb_ocb11.categories_menu_registrasi" action="siswa_psb_ocb11.registrasi_action_window" sequence="2"/>
         <!-- <menuitem name="Wizard Distribusi Siswa" id="siswa_psb_ocb11.action_menu_distribusi" parent="siswa_psb_ocb11.categories_menu_registrasi" action="siswa_psb_ocb11.wizard_distribusi_siswa" sequence="3"/> -->
         <menuitem name="Distribusi Siswa" id="siswa_psb_ocb11.action_menu_distribusi_siswa" parent="siswa_psb_ocb11.categories_menu_registrasi" action="siswa_psb_ocb11.distribusi_siswa_action_window" sequence="34"/>
+
+        <menuitem name="Configuration" id="siswa_psb_ocb11.menu_configuration" parent="siswa_psb_ocb11.root_menu" 
+            sequence="2" groups="base.group_system" />
+        <menuitem name="PSB Setting" id="siswa_psb_ocb11.psb_setting_menu" parent="siswa_psb_ocb11.menu_configuration" 
+            sequence="1" action="siswa_psb_ocb11.psb_setting_form_action" />
     </data>
 </odoo>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data >
+        <record id="default_psb_setting_data" model="siswa_psb_ocb11.psb_setting">
+            <field name="name">PSB Setting</field>
+            <field name="enable_biaya_registrasi">False</field>
+        </record>
+
+    </data>
+</odoo>
