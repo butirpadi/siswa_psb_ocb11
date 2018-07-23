@@ -88,14 +88,14 @@
                                 </group>
                             </page>
                             <page name="page_pembayaran" string="Pembayaran" >
-                                <!-- <group attrs="{'invisible':[('state', '=', 'reg')]}" >
+                                <group attrs="{'invisible':[('state', '=', 'reg')]}" >
                                     <group>
-                                        <button name="generate_pembayaran" string="Generate Pembayaran" type="object" />
+                                        <button name="generate_pembayaran_default" string="Generate Pembayaran" type="object" />
                                     </group>
                                     <group></group>
-                                </group> -->
+                                </group>
                                 <field name="payment_lines" options='{"no_create": True}' >
-                                    <tree editable="bottom" >
+                                    <tree editable="bottom" create="false" >
                                         <field name="calon_siswa_id" invisible="1" />
                                         <field name="biaya_id" options='{"no_create": False, "no_edit": True, "no_create_edit": True, "no_open": True}' />
                                         <field name="is_bulanan" invisible="1" />
