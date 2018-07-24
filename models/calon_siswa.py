@@ -57,7 +57,22 @@ class calon_siswa(models.Model):
     terbilang = fields.Char('Terbilang')
     satuan = ['', 'satu', 'dua', 'tiga', 'empat', 'lima', 'enam', 'tujuh',
           'delapan', 'sembilan', 'sepuluh', 'sebelas']
-    
+    bayar_tunai = fields.Float('Bayar Tunai', default=0)
+
+    def calculate_bayar_tunai(self):
+        tunai = self.bayar_tunai
+        for pay in self.payment_lines:
+            if tunai > 0 :
+                if tunai > pay.harga :
+                    pay.dibayar = pay.harga
+                    tunai -= pay.harga
+                else:
+                    pay.dibayar = tunai
+                    tunai = 0
+            else:
+                # jika tunai tidak mencukupi maka hapus saja payment nya
+                pay.unlink()
+
     @api.onchange('is_siswa_lama')
     def onchange_is_siswa_lama(self):
         print('onchange is siswa lama')

@@ -24,66 +24,73 @@
             <field name="name">calon.psb.ocb11.form</field>
             <field name="model">siswa_psb_ocb11.calon_siswa</field>
             <field name="arch" type="xml">
-                <form string="Registrasi" class="o_sale_order">
+                <form string="Registrasi" class="o_sale_order"  >
                     <header>
                         <button name="action_confirm" type="object" string="Confirm" attrs="{'invisible':['|',('state', '=', 'reg'),('reg_number', '=', 'New')]}" class="btn btn-primary" />
                         <button name="action_print_kwitansi" type="object" string="Print" attrs="{'invisible':['|',('state', '=', 'draft'),('reg_number', '=', 'New')]}" class="btn" />
                         <button name="action_reset" type="object" string="Reset" attrs="{'invisible':[('state', '!=', 'reg')]}" class="btn btn-danger" confirm="Are you sure to do this action?" groups="siswa_psb_ocb11.siswa_psb_group_admin" />
                         <field name="state" widget="statusbar" statusbar_visible="draft,reg"/>
                     </header>
-                    <sheet>
+                    <sheet >
                         <div class="oe_title">
                             <h1>
                                 <field name="reg_number" readonly="1"/>
                             </h1>
                         </div>
                         <notebook>
-                            <page name="page_bioadata" string="Biodata" >
-                                <group string="Biodata Siswa" >
+                            <page name="page_bioadata" string="Biodata"  >
+                                <group string="Biodata Siswa"  >
                                     <group  >
-                                        <field name="tahunajaran_id" options="{'no_create':True,'no_edit':True,'no_create_edit': True,'no_open':True}" context="{'active_test': False}" required="1" />
-                                        <field name="tanggal_registrasi"  />
+                                        <field name="tahunajaran_id" 
+                                            attrs="{'readonly':[('state', '=', 'reg')] }"
+                                            options="{'no_create':True,'no_edit':True,'no_create_edit': True,'no_open':True}" 
+                                            context="{'active_test': False}" required="1" />
+                                        <field name="tanggal_registrasi" attrs="{'readonly':[('state', '=', 'reg')] }" />
                                         <!-- <field name="formulir_id" options="{'no_create':True,'no_edit':True,'no_create_edit': True,'no_open':True}" /> -->
-                                        <field name="is_siswa_lama"  />
-                                        <field name="siswa_id" attrs="{'invisible':[('is_siswa_lama', '=', False)], 'required':[('is_siswa_lama','=',True)] }" options="{'no_create':True,'no_edit':True,'no_create_edit': True,'no_open':True}" />
+                                        <field name="is_siswa_lama" attrs="{'readonly':[('state', '=', 'reg')] }" />
+                                        <field name="siswa_id" 
+                                            attrs="{'invisible':[('is_siswa_lama', '=', False)], 'required':[('is_siswa_lama','=',True)], 'readonly':[('state', '=', 'reg')] }" 
+                                            options="{'no_create':True,'no_edit':True,'no_create_edit': True,'no_open':True}" />
                                         <field name="name" attrs="{'invisible':[('is_siswa_lama', '=', True)] }" />
                                         <!-- <field name="formulir_tahunajaran_id"/> -->
-                                        <field name="jenjang_id" options="{'no_create':True,'no_edit':True,'no_create_edit': True,'no_open':True}" />
-                                        <field name="panggilan" />
-                                        <field name="jenis_kelamin" />
-                                        <field name="tempat_lahir" />
-                                        <field name="tanggal_lahir" />
-                                        <field name="nis" />
-                                        <field name="tahunajaran_id" options="{'no_create':True,'no_edit':True,'no_create_edit': True,'no_open':True}" context="{'active_test': False}" invisible="1" />
+                                        <field name="jenjang_id" 
+                                            attrs="{'readonly':[('state', '=', 'reg')] }" 
+                                            options="{'no_create':True,'no_edit':True,'no_create_edit': True,'no_open':True}" />
+                                        <field name="panggilan" attrs="{'readonly':[('state', '=', 'reg')] }" />
+                                        <field name="jenis_kelamin" attrs="{'readonly':[('state', '=', 'reg')] }" />
+                                        <field name="tempat_lahir" attrs="{'readonly':[('state', '=', 'reg')] }" />
+                                        <field name="tanggal_lahir" attrs="{'readonly':[('state', '=', 'reg')] }" />
+                                        <field name="nis" attrs="{'readonly':[('state', '=', 'reg')] }" />
+                                        <!-- <field name="tahunajaran_id" options="{'no_create':True,'no_edit':True,'no_create_edit': True,'no_open':True}" context="{'active_test': False}" invisible="1" /> -->
                                     </group>
                                     <group>
-                                        <field name="anak_ke" />
-                                        <field name="dari_bersaudara" />
-                                        <label for="street" string="Alamat"/>
+                                        <field name="anak_ke" attrs="{'readonly':[('state', '=', 'reg')] }" />
+                                        <field name="dari_bersaudara" attrs="{'readonly':[('state', '=', 'reg')] }" />
+                                        <label for="street" string="Alamat" attrs="{'readonly':[('state', '=', 'reg')] }" />
                                         <div class="o_address_format">
-                                            <field name="street" placeholder="Street..." class="o_address_street" />
-                                            <field name="street2" placeholder="Street 2..." class="o_address_street" />
-                                            <field name="city" placeholder="City" class="o_address_city" />
-                                            <field name="state_id" class="o_address_state" placeholder="State" options="{&quot;no_open&quot;: True}"  context="{'country_id': country_id, 'zip': zip}"/>
-                                            <field name="zip" placeholder="ZIP" class="o_address_zip" />
-                                            <field name="country_id" placeholder="Country" class="o_address_country" options="{&quot;no_open&quot;: True, &quot;no_create&quot;: True}" />
+                                            <field name="street" placeholder="Street..." class="o_address_street" attrs="{'readonly':[('state', '=', 'reg')] }" />
+                                            <field name="street2" placeholder="Street 2..." class="o_address_street" attrs="{'readonly':[('state', '=', 'reg')] }" />
+                                            <field name="city" placeholder="City" class="o_address_city" attrs="{'readonly':[('state', '=', 'reg')] }" />
+                                            <field name="state_id" class="o_address_state" placeholder="State" options="{&quot;no_open&quot;: True}"  context="{'country_id': country_id, 'zip': zip}" attrs="{'readonly':[('state', '=', 'reg')] }" />
+                                            <field name="zip" placeholder="ZIP" class="o_address_zip" attrs="{'readonly':[('state', '=', 'reg')] }" />
+                                            <field name="country_id" placeholder="Country" class="o_address_country" options="{&quot;no_open&quot;: True, &quot;no_create&quot;: True}" attrs="{'readonly':[('state', '=', 'reg')] }" />
                                         </div>
-                                        <field name="phone" />
-                                        <field name="mobile" />
+                                        <field name="phone" attrs="{'readonly':[('state', '=', 'reg')] }" />
+                                        <field name="mobile" attrs="{'readonly':[('state', '=', 'reg')] }" />
                                     </group>
                                 </group>
                             </page>
                             <page name="page_orangtua" string="Orang Tua/Wali" >
                                 <group string="Orang Tua/Wali" >
                                     <group  >
-                                        <field name="ayah" />
-                                        <field name="pekerjaan_ayah_id" string="Pekerjaan" options="{'no_create':True,'no_edit':True,'no_create_edit': True,'no_open':True}" />
-                                        <field name="telp_ayah" string="Phone" />
+                                        <field name="ayah" attrs="{'readonly':[('state', '=', 'reg')] }" />
+                                        <field name="pekerjaan_ayah_id" string="Pekerjaan" options="{'no_create':True,'no_edit':True,'no_create_edit': True,'no_open':True}" attrs="{'readonly':[('state', '=', 'reg')] }" />
+                                        <field name="telp_ayah" string="Phone" attrs="{'readonly':[('state', '=', 'reg')] }" />
                                     </group>
                                     <group>
-                                        <field name="ibu" />
-                                        <field name="pekerjaan_ibu_id" string="Pekerjaan" options="{'no_create':True,'no_edit':True,'no_create_edit': True,'no_open':True}" />
-                                        <field name="telp_ibu" string="Phone" />
+                                        <field name="ibu" attrs="{'readonly':[('state', '=', 'reg')] }" />
+                                        <field name="pekerjaan_ibu_id" string="Pekerjaan" options="{'no_create':True,'no_edit':True,'no_create_edit': True,'no_open':True}" attrs="{'readonly':[('state', '=', 'reg')] }" />
+                                        <field name="telp_ibu" string="Phone" attrs="{'readonly':[('state', '=', 'reg')] }" />
                                     </group>
                                 </group>
                             </page>
@@ -92,9 +99,28 @@
                                     <group>
                                         <button name="generate_pembayaran_default" string="Generate Pembayaran" type="object" />
                                     </group>
-                                    <group></group>
+                                    <group>
+                                    </group>
                                 </group>
-                                <field name="payment_lines" options='{"no_create": True}' >
+
+                                <!-- <group attrs="{'invisible':[('state', '=', 'reg')]}" >
+                                    <div class="row" >
+                                        <div class="col-xs-4" >
+                                            <button name="generate_pembayaran_default" string="Generate Pembayaran" type="object" />
+                                        </div>
+                                        <div class="col-xs-2" >
+                                            <label for="bayar_tunai" >Bayar Tunai</label>
+                                        </div>
+                                        <div class="col-xs-2" >
+                                            <field name="bayar_tunai" class="col-xs-2" />
+                                        </div>
+                                        <div class="col-xs-4" >
+                                            <button name="calculate_bayar_tunai" string="Calculate Bayar Tunai" type="object" />
+                                        </div>
+                                    </div>                                
+                                </group> -->
+
+                                <field name="payment_lines" options='{"no_create": True}' attrs="{'readonly':[('state', '=', 'reg')] }" >
                                     <tree editable="bottom" create="false" >
                                         <field name="calon_siswa_id" invisible="1" />
                                         <field name="biaya_id" options='{"no_create": False, "no_edit": True, "no_create_edit": True, "no_open": True}' />
@@ -104,10 +130,14 @@
                                         <field name="dibayar" sum="Total Bayar" />
                                     </tree>
                                 </field>
+
+                                <group class="oe_subtotal_footer oe_right" colspan="2" name="total_bayar">
+                                    <field name="bayar_tunai" widget='monetary' attrs="{'readonly':[('state', '=', 'reg')] }" />
+                                    <label for="calculate_bayar_tunai" string="" invisible="1" />
+                                    <button name="calculate_bayar_tunai" string="Calculate Bayar Tunai" type="object" class="btn btn-success oe_edit_only" attrs="{'invisible':[('state', '=', 'reg')] }" />
+                                </group>
                             </page>
                         </notebook>
-                        
-
                         
                     </sheet>
                 </form>
