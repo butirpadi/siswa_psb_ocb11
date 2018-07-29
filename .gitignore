@@ -1,5 +1,5 @@
 *.pyc
 *.cpython-35.pyc
-controllers/__pycache__
-models/__pycache__
-wizards/__pycache__
+controllers/__pycache__/*
+models/__pycache__/*
+wizards/__pycache__/*
