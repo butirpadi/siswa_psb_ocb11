@@ -3,4 +3,3 @@
 controllers/__pycache__/*
 models/__pycache__/*
 wizards/__pycache__/*
-/**/*.pyc
