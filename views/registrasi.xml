@@ -97,7 +97,7 @@
                             <page name="page_pembayaran" string="Pembayaran" >
                                 <group attrs="{'invisible':[('state', '=', 'reg')]}" >
                                     <group>
-                                        <button name="generate_pembayaran_default" string="Generate Pembayaran" type="object" />
+                                        <button name="generate_pembayaran_default" string="Generate Pembayaran" type="object" class="oe_edit_only" />
                                     </group>
                                     <group>
                                     </group>
