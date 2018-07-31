@@ -51,7 +51,8 @@
                                         <field name="siswa_id" 
                                             attrs="{'invisible':[('is_siswa_lama', '=', False)], 'required':[('is_siswa_lama','=',True)], 'readonly':[('state', '=', 'reg')] }" 
                                             options="{'no_create':True,'no_edit':True,'no_create_edit': True,'no_open':True}" />
-                                        <field name="name" attrs="{'invisible':[('is_siswa_lama', '=', True)] }" />
+                                        <field name="name" 
+                                            attrs="{'invisible':[('is_siswa_lama', '=', True)], 'readonly':[('state', '=', 'reg')] }" />
                                         <!-- <field name="formulir_tahunajaran_id"/> -->
                                         <field name="jenjang_id" 
                                             attrs="{'readonly':[('state', '=', 'reg')] }" 
@@ -100,28 +101,16 @@
                                         <button name="generate_pembayaran_default" string="Generate Pembayaran" type="object" class="oe_edit_only" />
                                     </group>
                                     <group>
+                                        <field name="biaya_optional_ids" widget="many2many_tags" 
+                                            options="{'no_create_edit': True,'no_open':True,'no_create':True,'no_edit':True}"
+                                            domain="[('is_optional','=',True)]"  />
+                                        <label for="generate_biaya_optional" string="" />
+                                        <button name="generate_biaya_optional" string="Add" type="object" class="oe_edit_only" />
                                     </group>
                                 </group>
 
-                                <!-- <group attrs="{'invisible':[('state', '=', 'reg')]}" >
-                                    <div class="row" >
-                                        <div class="col-xs-4" >
-                                            <button name="generate_pembayaran_default" string="Generate Pembayaran" type="object" />
-                                        </div>
-                                        <div class="col-xs-2" >
-                                            <label for="bayar_tunai" >Bayar Tunai</label>
-                                        </div>
-                                        <div class="col-xs-2" >
-                                            <field name="bayar_tunai" class="col-xs-2" />
-                                        </div>
-                                        <div class="col-xs-4" >
-                                            <button name="calculate_bayar_tunai" string="Calculate Bayar Tunai" type="object" />
-                                        </div>
-                                    </div>                                
-                                </group> -->
-
                                 <field name="payment_lines" options='{"no_create": True}' attrs="{'readonly':[('state', '=', 'reg')] }" >
-                                    <tree editable="bottom" create="false" >
+                                    <tree editable="bottom" create="false" delete="false" >
                                         <field name="calon_siswa_id" invisible="1" />
                                         <field name="biaya_id" options='{"no_create": False, "no_edit": True, "no_create_edit": True, "no_open": True}' />
                                         <field name="is_bulanan" invisible="1" />

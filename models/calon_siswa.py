@@ -52,7 +52,13 @@ class calon_siswa(models.Model):
     usia = fields.Float('Usia', compute="_compute_usia")
     is_distributed = fields.Boolean('is distributed', default=False)
     rombel_id = fields.Many2one('siswa_ocb11.rombel',string='Rombongan Belajar')
-    payment_lines = fields.One2many('siswa_psb_ocb11.calon_siswa_biaya', inverse_name='calon_siswa_id' , string='Pembayaran')
+    payment_lines = fields.One2many('siswa_psb_ocb11.calon_siswa_biaya', 
+                    inverse_name='calon_siswa_id', 
+                    string='Pembayaran')
+    biaya_optional_ids = fields.Many2many('siswa_keu_ocb11.biaya',
+                        relation='siswa_psb_ocb11_biaya_optional_calon_siswa_rel', 
+                        column1='calon_siswa_id', column2='biaya_id', 
+                        string="Biaya Opsional", ondelete="cascade")
     total = fields.Float('Total Bayar')
     terbilang = fields.Char('Terbilang')
     satuan = ['', 'satu', 'dua', 'tiga', 'empat', 'lima', 'enam', 'tujuh',
@@ -71,7 +77,9 @@ class calon_siswa(models.Model):
                     tunai = 0
             else:
                 # jika tunai tidak mencukupi maka hapus saja payment nya
-                pay.unlink()
+                # pay.unlink()
+                # ralat jika tunai tidak mencukupi makan set bayar = 0 
+                pay.dibayar = 0
 
     @api.onchange('is_siswa_lama')
     def onchange_is_siswa_lama(self):
@@ -199,8 +207,19 @@ class calon_siswa(models.Model):
                 id_siswa = new_siswa.id
 
             for by in ta_jenjang.biayas:
+
+                # cek biaya apakah is_optional dan apakah di pilih dalam payment_lines
+                by_found = False
+                if by.biaya_id.is_optional:
+                    for by_in_pay in self.payment_lines:
+                        if by.biaya_id.id == by_in_pay.biaya_id.id:
+                            by_found = True
+                    if not by_found:
+                        continue
+                        
                 if self.is_siswa_lama and by.biaya_id.is_siswa_baru_only:
                     print('skip')
+                    continue
                 else:
                     print('JENJANG ID : ' + str(self.jenjang_id.id))
                     if by.biaya_id.is_bulanan:
@@ -417,9 +436,22 @@ class calon_siswa(models.Model):
     #                                 'dibayar' : harga,
     #                                 })]
 
+    @api.multi
+    def write(self, vals):
+        pprint(vals)
+
+        result = super(calon_siswa, self).write(vals)       
+        
+        return result
+
     def generate_pembayaran_default(self):
+        print('inside generate pembayaran default')
         # clear data sebelumnya
         self.payment_lines.unlink()
+        # clear biaya optional
+        self.biaya_optional_ids.unlink()
+        # clear bayar tuna
+        self.bayar_tunai = 0
 
         # get biaya registrasi
         ta_jenjang = self.env['siswa_ocb11.tahunajaran_jenjang'].search([
@@ -432,22 +464,74 @@ class calon_siswa(models.Model):
 
         # for by in biaya_registrasi_ids[0].biaya_ta_jenjang_ids:
         for by in biaya_registrasi_ids:
-            harga = by.harga
+            if not by.biaya_id.is_optional:
+                harga = by.harga
+                
+                if by.biaya_id.is_different_by_gender and self.jenis_kelamin == 'perempuan':
+                        harga = by.harga_alt
+                
+                bulan = by.bulan
+                if by.is_bulanan:
+                    bulan = 7
+
+                self.payment_lines =  [(0, 0,  { 
+                                        'biaya_id' : by.biaya_id.id, 
+                                        'bulan' : bulan,
+                                        'harga' : harga,
+                                        'dibayar' : harga,
+                                        })]
+
+    def generate_biaya_optional(self):
+        for by in self.biaya_optional_ids:
+            # get biaya registrasi
+            ta_jenjang = self.env['siswa_ocb11.tahunajaran_jenjang'].search([
+                ('tahunajaran_id', '=', self.tahunajaran_id.id),
+                ('jenjang_id', '=', self.jenjang_id.id),
+            ])
+            biaya_registrasi_id = self.env['siswa_keu_ocb11.biaya_ta_jenjang'].search([
+                ('tahunajaran_jenjang_id', '=', ta_jenjang.id),
+                ('biaya_id', '=', by.id),
+            ])
+
+            harga = biaya_registrasi_id.harga
+                
+            if biaya_registrasi_id.biaya_id.is_different_by_gender and self.jenis_kelamin == 'perempuan':
+                    harga = biaya_registrasi_id.harga_alt
+
+            bulan = biaya_registrasi_id.bulan
             
-            if by.biaya_id.is_different_by_gender and self.jenis_kelamin == 'perempuan':
-                    harga = by.harga_alt
-            
-            bulan = by.bulan
-            if by.is_bulanan:
+            if biaya_registrasi_id.is_bulanan:
                 bulan = 7
 
-            self.payment_lines =  [(0, 0,  { 
-                                    'biaya_id' : by.biaya_id.id, 
-                                    'bulan' : bulan,
-                                    'harga' : harga,
-                                    'dibayar' : harga,
-                                    })]
+            # loop untuk mencari di payment_lines apakah biaya ini telah tersedia
+            is_found = False
+            for byPay in self.payment_lines:
+                if byPay.biaya_id.id == by.id :
+                    is_found = True
+                    break
 
-        
+            if not is_found:
+                newid = self.env['siswa_psb_ocb11.calon_siswa_biaya'].create({
+                    'calon_siswa_id' : self.id,
+                    'biaya_id' : by.id, 
+                    'bulan' : bulan,
+                    'harga' : harga,
+                    'dibayar' : harga,
+                })
+
+                # after generate to payment_lines, clear the biaya_optional_ids
+                self.biaya_optional_ids =  [[6, False, []]]
+    
+    # @api.onchange('payment_lines')
+    # def payment_lines_onchange(self):
+    #     print('onchange on payment_lines_onchange')
+    #     added_biaya_optional_ids = []
+    #     for by in self.payment_lines:
+    #         if by.biaya_id.is_optional:
+    #             added_biaya_optional_ids.append(by.id)
+
+    #     domain = {'biaya_optional_ids':[('id','not in',added_biaya_optional_ids)]}
+    #     return {'domain':domain, 'value':{'biaya_optional_ids':[]}}    
+
 
 
