@@ -289,28 +289,29 @@ class calon_siswa(models.Model):
 
 
                 # get siswa_biaya
-                if pay.biaya_id:
-                    if pay.biaya_id.is_bulanan:
-                        pay_biaya_id = self.env['siswa_keu_ocb11.siswa_biaya'].search([
-                                    ('siswa_id','=',id_siswa),
-                                    ('tahunajaran_id','=',self.tahunajaran_id.id),
-                                    ('biaya_id','=',pay.biaya_id.id),
-                                    ('tahunajaran_id','=',self.tahunajaran_id.id),
-                                    ('bulan','=',pay.bulan),
-                                    ]).id
-                    else:
-                        pay_biaya_id = self.env['siswa_keu_ocb11.siswa_biaya'].search([
-                                    ('siswa_id','=',id_siswa),
-                                    ('tahunajaran_id','=',self.tahunajaran_id.id),
-                                    ('biaya_id','=',pay.biaya_id.id),
-                                    ('tahunajaran_id','=',self.tahunajaran_id.id),
-                                    ]).id
-                    
-                    pembayaran.pembayaran_lines =  [(0, 0,  { 
-                                            'biaya_id' : pay_biaya_id, 
-                                            'bayar' : pay.dibayar 
-                                            })]
-                    total_bayar += pay.dibayar
+                if pay.dibayar > 0: #jangan dimasukkan ke pembayaran untuk yang nilai dibayarnya = 0
+                    if pay.biaya_id:
+                        if pay.biaya_id.is_bulanan:
+                            pay_biaya_id = self.env['siswa_keu_ocb11.siswa_biaya'].search([
+                                        ('siswa_id','=',id_siswa),
+                                        ('tahunajaran_id','=',self.tahunajaran_id.id),
+                                        ('biaya_id','=',pay.biaya_id.id),
+                                        ('tahunajaran_id','=',self.tahunajaran_id.id),
+                                        ('bulan','=',pay.bulan),
+                                        ]).id
+                        else:
+                            pay_biaya_id = self.env['siswa_keu_ocb11.siswa_biaya'].search([
+                                        ('siswa_id','=',id_siswa),
+                                        ('tahunajaran_id','=',self.tahunajaran_id.id),
+                                        ('biaya_id','=',pay.biaya_id.id),
+                                        ('tahunajaran_id','=',self.tahunajaran_id.id),
+                                        ]).id
+                        
+                        pembayaran.pembayaran_lines =  [(0, 0,  { 
+                                                'biaya_id' : pay_biaya_id, 
+                                                'bayar' : pay.dibayar 
+                                                })]
+                        total_bayar += pay.dibayar
                 
                 print('pay_biaya_id : ' + str(pay_biaya_id))
                 print('-------------------')
