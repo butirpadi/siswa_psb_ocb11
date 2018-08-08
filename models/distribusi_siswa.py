@@ -52,12 +52,14 @@ class distribusi_siswa(models.Model):
                 cs_filtered = self.calon_siswa_ids.filtered(lambda x: x.jenis_kelamin == 'perempuan')
 
             for rb in self.rombel_ids:
-                cap = math.ceil(len(cs_filtered)/2)
+                cap = math.ceil(len(cs_filtered)/len(self.rombel_ids))
                 for cs in cs_filtered:
                     if not cs.rombel_id:
                         if cap > 0:
                             cap -= 1
                             cs.rombel_id = rb.id
+    
+    def action_confirm_distribute(self):
         # # register siswa
         for cs in self.calon_siswa_ids:
             id_siswa = cs.registered_siswa_id.id
@@ -81,8 +83,12 @@ class distribusi_siswa(models.Model):
         for rb_dash in rb_dashboards:
             rb_dash.lets_compute_jumlah_siswa()
        
-    def action_manual_distribute(self):
-        print('manual distribute')
+    # def action_manual_distribute(self):
+    #     # print('manual distribute')
+    #     # node =  eview.xpath("//field[@name='calon_siswa_ids']/tree/field[@name='rombel_id']")
+    #     # if login_user_dpt_id:
+    #     user_filter =  "[('jenjang_id', '='," + self.jenjang_id.id + " )]"
+    #     this.calon_siswa_ids.rombel_id.set('domain',user_filter)
 
     @api.onchange('jenjang_id')
     def onchange_jenjang(self):
@@ -114,6 +120,10 @@ class distribusi_siswa(models.Model):
     
     @api.multi
     def unlink(self):
+        # clear rombel_id yang telah di set
+        for cs in self.calon_siswa_ids:
+            cs.rombel_id = None
+            
         if self.state == 'done':
             # raise Warning(_("You can not delete Done state data"))
             raise exceptions.except_orm(_('Warning'), _('You can not delete Done state data'))

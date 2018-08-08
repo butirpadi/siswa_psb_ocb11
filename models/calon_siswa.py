@@ -11,6 +11,7 @@ class calon_siswa(models.Model):
     state = fields.Selection([('draft', 'Draft'), ('reg', 'Registered')], string='State', required=True, default='draft')
     is_siswa_lama = fields.Boolean('Siswa Lama', default=False)
     siswa_id = fields.Many2one('res.partner', string="Data Siswa Lama")
+    no_induk = fields.Char('No. Induk', related="siswa_id.induk")
     registered_siswa_id = fields.Many2one('res.partner', string="Registered Siswa")
     tahunajaran_id = fields.Many2one('siswa_ocb11.tahunajaran', string='Tahun Ajaran', required=True, default=lambda self: self.env['siswa_ocb11.tahunajaran'].search([('active','=',True)]))
     name = fields.Char('Nama', required=True)
@@ -51,7 +52,7 @@ class calon_siswa(models.Model):
     dari_bersaudara = fields.Integer('Dari Bersaudara')
     usia = fields.Float('Usia', compute="_compute_usia")
     is_distributed = fields.Boolean('is distributed', default=False)
-    rombel_id = fields.Many2one('siswa_ocb11.rombel',string='Rombongan Belajar')
+    rombel_id = fields.Many2one('siswa_ocb11.rombel',string='Rombongan Belajar', domain="[('jenjang_id','=',jenjang_id)]")
     payment_lines = fields.One2many('siswa_psb_ocb11.calon_siswa_biaya', 
                     inverse_name='calon_siswa_id', 
                     string='Pembayaran')
@@ -105,8 +106,9 @@ class calon_siswa(models.Model):
         domain = {'jenjang_id':[('order','>',rombel_siswa.jenjang_id.order )]}
         return {'domain':domain, 'value':{'jenjang_id':[]}} 
 
-    @api.onchange('siswa_id')
-    def siswa_id_onchange(self):
+        # set data siswa
+    # @api.onchange('siswa_id')
+    # def siswa_id_onchange(self):
         self.name = self.siswa_id.name
         self.panggilan = self.siswa_id.panggilan
         self.nis = self.siswa_id.nis
@@ -128,6 +130,14 @@ class calon_siswa(models.Model):
         self.ibu = self.siswa_id.ibu
         self.pekerjaan_ibu_id = self.siswa_id.pekerjaan_ibu_id
         self.telp_ibu = self.siswa_id.telp_ibu
+    
+    # @api.onchange('jenjan_id')
+    # def onchange_jenjang_id(self): # set filter rombel_id
+    #     domain = {'rombel_id':[('jenjang_id','=',self.jenjang_id)]}
+    #     return {'domain':domain, 'value':{'rombel_id':[]}} 
+
+    def get_current_jenjang_id(self):
+        return self.jenjang_id
 
     @api.model
     def create(self, vals):
@@ -189,6 +199,7 @@ class calon_siswa(models.Model):
                 })
                 # self.siswa_id = new_siswa.id 
                 self.registered_siswa_id = new_siswa.id
+                # self.siswa_id = new_siswa.id
 
             # update state
             self.state = 'reg'
@@ -289,7 +300,7 @@ class calon_siswa(models.Model):
 
 
                 # get siswa_biaya
-                if pay.dibayar > 0: #jangan dimasukkan ke pembayaran untuk yang nilai dibayarnya = 0
+                if pay.dibayar > 0: # jangan dimasukkan ke pembayaran untuk yang nilai dibayarnya = 0
                     if pay.biaya_id:
                         if pay.biaya_id.is_bulanan:
                             pay_biaya_id = self.env['siswa_keu_ocb11.siswa_biaya'].search([
@@ -533,6 +544,10 @@ class calon_siswa(models.Model):
 
     #     domain = {'biaya_optional_ids':[('id','not in',added_biaya_optional_ids)]}
     #     return {'domain':domain, 'value':{'biaya_optional_ids':[]}}    
+
+    # def filter_rombel_id(self):
+    #     domain = {'rombel_id':[('jenjang_id','=',self.jenjang_id)]}
+    #     self.rombel_id =  {'domain':domain, 'value':{'rombel_id':[]}} 
 
 
 
