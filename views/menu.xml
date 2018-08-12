@@ -17,6 +17,9 @@
         <menuitem name="Calon Siswa" id="siswa_psb_ocb11.action_menu_wizard_report_calon_siswa" 
             parent="siswa_psb_ocb11.menu_report" 
             action="siswa_psb_ocb11.wizard_report_calon_siswa_action" />
+        <menuitem name="Distribusi Siswa" id="siswa_psb_ocb11.action_menu_wizard_report_distribusi_siswa" 
+            parent="siswa_psb_ocb11.menu_report" 
+            action="siswa_psb_ocb11.wizard_report_distribusi_siswa_action" />
 
         <menuitem name="Configuration" id="siswa_psb_ocb11.menu_configuration" parent="siswa_psb_ocb11.root_menu" 
             sequence="3" groups="base.group_system" />
