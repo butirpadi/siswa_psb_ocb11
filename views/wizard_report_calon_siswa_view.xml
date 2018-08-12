@@ -1,0 +1,58 @@
+<odoo>
+    <data>
+        <record id="siswa_psb_ocb11.view_wizard_report_calon_siswa" model="ir.ui.view">
+            <field name="name">wizard.report.calon.siswa.view</field>
+            <field name="model">siswa_psb_ocb11.wizard_report_calon_siswa</field>
+            <field name="arch" type="xml">
+                <form string="Report Calon Siswa" class="o_sale_order" create="false">
+                    <header attrs="{'invisible':[('name','=','0')]}" >
+                        <button type="object" name="action_print" string="Print" />
+                    </header>
+                    <sheet>
+                        <div class="oe_title oe_read_only">
+                            <h1>
+                                <field name="name" readonly="1"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="tahunajaran_id" options="{'no_create_edit': True,'no_open':True,'no_create':True,'no_edit':True}" 
+                                    context="{'active_test':False}" attrs="{'readonly':[('name', '!=', '0')]}"/>
+                            </group>
+                            <group>
+                                <field name="jenjang_id" options="{'no_create_edit': True,'no_open':True,'no_create':True,'no_edit':True}" 
+                                    attrs="{'readonly':[('name', '!=', '0')]}" />
+                            </group>
+                        </group>
+                        <notebook attrs="{'invisible':[('name', '=', '0')]}" >
+                            <page name="page_data_siswa" string="Data Calon Siswa" >
+                                <field name='calon_siswa_ids' readonly='1'>
+                                    <tree>
+                                        <field name='name'  />
+                                        <field name='jenis_kelamin'/>
+                                        <field name='reg_number'/>
+                                    </tree>
+                                </field>
+                            </page>                                                 
+                        </notebook>
+                        <footer class="oe_edit_only" style="padding-top:10px;">
+                            <button name="action_save" type="object" string="Save" class="oe_highlight" attrs="{'invisible':[('name', '!=', '0')]}" />
+                            <!-- <button name="action_confirm" type="object" string="Confirm" class="oe_highlight" attrs="{'invisible':[('name', '=', '0')]}" style="margin-right:10px;" />
+                            <button name="action_reset" type="object" string="Reset" class="oe_highlight" attrs="{'invisible':[('name', '=', '0')]}" style="margin-right:10px;" groups="siswa_psb_ocb11.siswa_psb_group_admin" /> -->
+                                
+                            <button special="cancel" string="Cancel"/>
+                        </footer>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <act_window id="siswa_psb_ocb11.wizard_report_calon_siswa_action"
+            name="Data Calon Siswa"
+            src_model="siswa_psb_ocb11.calon_siswa"
+            res_model="siswa_psb_ocb11.wizard_report_calon_siswa"
+            view_mode="form"
+            target="new"
+            key2="client_action_multi"/>
+    </data>
+</odoo>

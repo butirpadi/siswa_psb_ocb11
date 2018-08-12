@@ -1,0 +1,134 @@
+<odoo>
+    <data>
+
+        <report
+            id="report_calon_siswa_action"
+            model="siswa_psb_ocb11.wizard_report_calon_siswa"
+            string="Data Calon Siswa"
+            report_type="qweb-html"
+            name="siswa_psb_ocb11.report_calon_siswa"
+            file="siswa_psb_ocb11.report_calon_siswa"
+            attachment_use="False"
+            print_report_name="'ReportCalonSiswa-%s' % (object.tahunajaran_id.name+'-'+object.jenjang_id.name)"
+            menu="False"
+            paperformat="siswa_ocb11.format_report_general"
+        />
+
+        <template id="report_calon_siswa">
+            <t t-call="web.html_container">            
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="web.basic_layout">
+                        <div class="page">
+                            <style>
+                                table.table{
+                                    border-left:none!important;
+                                    border-right:none!important;
+                                    background-color:transparent!important;
+                                }
+
+                                table.table tbody tr td {
+                                    border-right:none!important;
+                                    padding-top:0;
+                                    padding-bottom:0;
+                                    background-color:transparent!important;
+                                }
+                            </style>
+
+                            <div class="row" >
+                                <!-- <div class="col-xs-6" >
+                                    <strong><p style="margin-top:0;margin-bottom:0;text-transform:uppercase;font-weight:bolder;" t-esc="user.company_id.name"/></strong>
+                                    <p style="margin-top:0;margin-bottom:0;" ><span t-esc="user.company_id.street" ></span> <span t-esc="user.company_id.street2" ></span></p>
+                                    <p style="margin-top:0;margin-bottom:0;" ><span t-esc="user.company_id.city" ></span> <span t-esc="user.company_id.state_id.name" ></span> <span t-esc="user.company_id.zip" ></span></p>
+                                    <p style="margin-top:0;margin-bottom:0;" >Telp: <span t-esc="user.company_id.phone" ></span></p>
+                                </div> -->
+
+                                <div class="col-xs-12 text-center" >
+                                    <h3><strong>DATA CALON SISWA</strong></h3>
+                                    <span t-field="o.tahunajaran_id.name" /> - <span t-field="o.jenjang_id.name" />
+                                </div>
+
+                                <div class="col-xs-12" >  
+                                    <hr style="border-top: 4px double black;" />
+                                    <table class="table table-condensed" >
+                                        <thead>
+                                            <tr>
+                                                <th class="text-center" >No</th>
+                                                <th >Nama</th>
+                                                <th >Jenis Kelamin</th>
+                                                <th >No. Registrasi</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <t t-set="row_num" t-value="1" />
+                                            <t t-set="sum_laki" t-value="0" />
+                                            <t t-set="sum_perempuan" t-value="0" />
+                                            <t t-foreach="o.calon_siswa_ids" t-as="cs">
+                                                <tr>
+                                                    <td class="text-center" >
+                                                        <t t-esc="row_num" />
+                                                        <t t-set="row_num" t-value="row_num+1" />
+                                                    </td>
+                                                    <td>
+                                                        <span t-field="cs.name" />
+                                                    </td>
+                                                    <td >
+                                                        <t t-if="cs.jenis_kelamin=='laki'">
+                                                            Laki-laki
+                                                            <t t-set="sum_laki" t-value="sum_laki+1" />
+                                                        </t>
+                                                        <t t-if="cs.jenis_kelamin=='perempuan'">
+                                                            Perempuan
+                                                            <t t-set="sum_perempuan" t-value="sum_perempuan+1" />
+                                                        </t>
+                                                    </td>
+                                                    <td>
+                                                        <span t-field="cs.reg_number" />                                                        
+                                                    </td>
+                                                    
+                                                </tr>                                                
+                                            </t>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <div class="col-xs-4" >
+                                    <table class="table table-bordered" >
+                                        <tbody>
+                                            <tr>
+                                                <td  >
+                                                    <strong>Laki-laki</strong>
+                                                </td>
+                                                <td class="text-right" >
+                                                    <t t-esc="sum_laki"  />
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td >
+                                                    <strong>Perempuan</strong>
+                                                </td>
+                                                <td class="text-right" >
+                                                    <t t-esc="sum_perempuan"  />
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                        <tfoot>
+                                            <tr>
+                                                <td>
+                                                    <strong>Total</strong>
+                                                </td>
+                                                <td class="text-right" >
+                                                    <t t-esc="sum_laki+sum_perempuan" />
+                                                </td>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </div>                        
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+
+    </data>
+</odoo>
