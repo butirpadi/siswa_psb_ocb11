@@ -32,24 +32,29 @@
                                     padding-bottom:0;
                                     background-color:transparent!important;
                                 }
+
+                                table.table-data thead tr th{
+                                    border-top: thin solid black !important;
+                                    border-bottom: thin solid black !important;
+                                }
                             </style>
 
                             <div class="row" >
-
-                                <div class="col-xs-12 text-center" >
-                                    <h3><strong>DATA SISWA</strong></h3>
-                                    <span t-field="o.tahunajaran_id.name" /> - <span t-field="o.rombel_id.name" />
-                                </div>
-
                                 <div class="col-xs-12" >  
-                                    <hr style="border-top: 4px double black;" />
-                                    <table class="table table-condensed" >
+                                    <div class="text-center" >
+                                        <h3><strong>DATA SISWA</strong></h3>
+                                        <span t-field="o.tahunajaran_id.name" /> - <span t-field="o.rombel_id.name" />
+                                    </div>
+
+                                    <br/><![CDATA[&nbsp;]]>
+
+                                    <table class="table table-condensed table-data" >
                                         <thead>
                                             <tr>
                                                 <th class="text-center" >No</th>
                                                 <th class="text-center" >No. Induk</th>
                                                 <th >Nama</th>
-                                                <th >Jenis Kelamin</th>
+                                                <th class="text-center" >Jenis Kelamin</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -68,7 +73,7 @@
                                                     <td>
                                                         <span t-field="cs.name" />
                                                     </td>
-                                                    <td >
+                                                    <td class="text-center" >
                                                         <t t-if="cs.jenis_kelamin=='laki'">
                                                             Laki-laki
                                                             <t t-set="sum_laki" t-value="sum_laki+1" />
@@ -84,7 +89,7 @@
                                     </table>
                                 </div>
 
-                                <div class="col-xs-4" >
+                                <div class="col-xs-3" >
                                     <table class="table table-bordered" >
                                         <tbody>
                                             <tr>
@@ -103,8 +108,6 @@
                                                     <t t-esc="sum_perempuan"  />
                                                 </td>
                                             </tr>
-                                        </tbody>
-                                        <tfoot>
                                             <tr>
                                                 <td>
                                                     <strong>Total</strong>
@@ -113,7 +116,7 @@
                                                     <t t-esc="sum_laki+sum_perempuan" />
                                                 </td>
                                             </tr>
-                                        </tfoot>
+                                        </tbody>
                                     </table>
                                 </div>
                             </div>                        

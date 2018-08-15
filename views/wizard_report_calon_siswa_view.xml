@@ -36,7 +36,7 @@
                             </page>                                                 
                         </notebook>
                         <footer class="oe_edit_only" style="padding-top:10px;">
-                            <button name="action_save" type="object" string="Save" class="oe_highlight" attrs="{'invisible':[('name', '!=', '0')]}" />
+                            <button name="action_save" type="object" string="Submit" class="oe_highlight" attrs="{'invisible':[('name', '!=', '0')]}" />
                             <!-- <button name="action_confirm" type="object" string="Confirm" class="oe_highlight" attrs="{'invisible':[('name', '=', '0')]}" style="margin-right:10px;" />
                             <button name="action_reset" type="object" string="Reset" class="oe_highlight" attrs="{'invisible':[('name', '=', '0')]}" style="margin-right:10px;" groups="siswa_psb_ocb11.siswa_psb_group_admin" /> -->
                                 
