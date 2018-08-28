@@ -15,6 +15,7 @@
                         <filter name="group_tahunajaran_id" string="Tahun Ajaran" domain="[]" context="{'group_by':'tahunajaran_id'}"/>
                         <filter name="group_jenjang" string="Jenjang" domain="[]" context="{'group_by':'jenjang_id'}"/>
                         <filter name="group_jenis_kelamin" string="Jenis Kelamin" domain="[]" context="{'group_by':'jenis_kelamin'}"/>
+                        <filter name="group_state" string="Status" context="{'group_by':'state'}"/>
                     </group>
                 </search>
             </field>
@@ -155,7 +156,11 @@
             <field name="name">Registrasi</field>
             <field name="res_model">siswa_psb_ocb11.calon_siswa</field>
             <field name="view_mode">tree,form</field>
-            <field name="context">{'search_default_group_tahunajaran_id':1,'search_default_group_jenjang':1}</field>
+            <field name="context">{
+                'search_default_group_tahunajaran_id':1,
+                'search_default_group_jenjang':1,
+                'search_default_group_state':1
+            }</field>
             <!-- <field name="search_view_id" ref="view_registrasi_filter"/> -->
             <!-- <field name="form_view_id" ref="siswa_psb_ocb11.view_form_registrasi"/> -->
             <!-- <field name="view_id" ref="siswa_psb_ocb11.registrasi_form_list"/> -->
