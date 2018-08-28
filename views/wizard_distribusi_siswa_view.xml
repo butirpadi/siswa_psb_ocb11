@@ -5,7 +5,7 @@
             <field name="name">wizard.ocb11.distribusi.siswa</field>
             <field name="model">siswa_psb_ocb11.wizard_distribusi_siswa</field>
             <field name="arch" type="xml">
-                <form string="Distribusi Siswa" class="o_sale_order" create="false">
+                <form duplicate="0" string="Distribusi Siswa" class="o_sale_order" create="false">
                     <sheet>
                         <div class="oe_title oe_read_only">
                             <h1>

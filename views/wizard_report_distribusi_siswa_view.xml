@@ -4,7 +4,7 @@
             <field name="name">wizard.report.distribusi.siswa.view</field>
             <field name="model">siswa_psb_ocb11.wizard_report_distribusi_siswa</field>
             <field name="arch" type="xml">
-                <form string="Report Distribusi Siswa" class="o_sale_order" create="false">
+                <form duplicate="0" string="Report Distribusi Siswa" class="o_sale_order" create="false">
                     <header attrs="{'invisible':[('name','=','0')]}" >
                         <button type="object" name="action_print" string="Print" />
                     </header>

@@ -35,7 +35,7 @@
             <field name="name">ocb11.distribusi.siswa.form</field>
             <field name="model">siswa_psb_ocb11.distribusi_siswa</field>
             <field name="arch" type="xml">
-                <form string="Distribusi Siswa" class="o_sale_order" create="false">
+                <form duplicate="0" string="Distribusi Siswa" class="o_sale_order" create="false">
                     <header>
                         <button type="object" name="action_reset" string="Reset" class="oe_edit_only" attrs="{'invisible':[('is_distributed','=',False)]}" confirm="Are you sure you want to do this?" groups="siswa_psb_ocb11.siswa_psb_group_admin" />
                         <button type="object" name="action_confirm_distribute" string="Confirm" class="oe_edit_only btn-primary" attrs="{'invisible':['|',('is_manual', '=', True),('is_distributed','=',True)]}" />

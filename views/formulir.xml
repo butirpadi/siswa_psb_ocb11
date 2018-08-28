@@ -45,7 +45,7 @@
             <field name="name">formulir.ocb11.form</field>
             <field name="model">siswa_psb_ocb11.formulir</field>
             <field name="arch" type="xml">
-                <form string="formulir" class="o_sale_order">
+                <form duplicate="0" string="formulir" class="o_sale_order">
                     <header>
                         <button name="action_print" type="object" string="Cetak Formulir" attrs="{'invisible':[('name', '=', 'New')]}" class="btn btn-default" />
                         <button name="action_print_kwitansi" type="object" string="Cetak Kwitansi" attrs="{'invisible':[('name', '=', 'New')]}" class="btn btn-default" />

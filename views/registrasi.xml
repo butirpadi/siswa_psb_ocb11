@@ -25,7 +25,7 @@
             <field name="name">calon.psb.ocb11.form</field>
             <field name="model">siswa_psb_ocb11.calon_siswa</field>
             <field name="arch" type="xml">
-                <form string="Registrasi" class="o_sale_order"  >
+                <form duplicate="0" string="Registrasi" class="o_sale_order"  >
                     <header>
                         <button name="action_confirm" type="object" string="Confirm" attrs="{'invisible':['|',('state', '=', 'reg'),('reg_number', '=', 'New')]}" class="btn btn-primary" />
                         <button name="action_print_kwitansi" type="object" string="Print" attrs="{'invisible':['|',('state', '=', 'draft'),('reg_number', '=', 'New')]}" class="btn" />
