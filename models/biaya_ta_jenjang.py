@@ -9,7 +9,8 @@ class biaya_ta_jenjang(models.Model):
     _inherit = 'siswa_keu_ocb11.biaya_ta_jenjang'
 
     is_bulanan = fields.Boolean('Is Bulanan',related='biaya_id.is_bulanan')
-    bulan = fields.Selection([(1, 'Januari'), 
+    bulan = fields.Selection([(0, '-'), 
+                            (1, 'Januari'),
                             (2, 'Februari'),
                             (3, 'Maret'),
                             (4, 'April'),

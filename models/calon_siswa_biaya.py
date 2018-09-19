@@ -12,7 +12,8 @@ class calon_siswa_biaya(models.Model):
     # is_siswa_lama = fields.Boolean(string='is Siswa Lama',related="calon_siswa_id.is_siswa_lama", store=True)
     biaya_id = fields.Many2one('siswa_keu_ocb11.biaya', string="Biaya")
     is_bulanan = fields.Boolean(string='Bulanan',related="biaya_id.is_bulanan")
-    bulan = fields.Selection([(1, 'Januari'), 
+    bulan = fields.Selection([(0, '-'), 
+                            (1, 'Januari'),
                             (2, 'Februari'),
                             (3, 'Maret'),
                             (4, 'April'),
