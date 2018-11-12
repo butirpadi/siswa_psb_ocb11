@@ -1,4 +1,4 @@
-<odoo>
+<flectra>
     <data>
 
     <record id="view_distribusi_siswa_filter" model="ir.ui.view">
@@ -87,4 +87,4 @@
         </record>
 
     </data>
-</odoo>
+</flectra>

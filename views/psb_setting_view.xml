@@ -1,4 +1,4 @@
-<odoo>
+<flectra>
     <data>
 
         <!-- <record id="res_config_settings_view_form" model="ir.ui.view">
@@ -83,4 +83,4 @@
             <!-- <field name="context">{'module' : 'sale_management'}</field> -->
         </record>
     </data>
-</odoo>
+</flectra>

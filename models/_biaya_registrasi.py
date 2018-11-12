@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from odoo import models, fields, api, _
+from flectra import models, fields, api, _
 from datetime import datetime
 from pprint import pprint
 
@@ -52,4 +52,4 @@ class biaya_registrasi(models.Model):
         return result
     
     
-   
+    

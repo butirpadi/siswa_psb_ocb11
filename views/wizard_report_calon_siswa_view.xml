@@ -1,4 +1,4 @@
-<odoo>
+<flectra>
     <data>
         <record id="siswa_psb_ocb11.view_wizard_report_calon_siswa" model="ir.ui.view">
             <field name="name">wizard.report.calon.siswa.view</field>
@@ -55,4 +55,4 @@
             target="new"
             key2="client_action_multi"/>
     </data>
-</odoo>
+</flectra>

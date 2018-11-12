@@ -1,4 +1,4 @@
-<odoo>
+<flectra>
   <data>
     <!-- explicit list view definition -->
     <!--
@@ -57,4 +57,4 @@
               action="siswa_psb_ocb11.action_server"/>
     -->
   </data>
-</odoo>
+</flectra>

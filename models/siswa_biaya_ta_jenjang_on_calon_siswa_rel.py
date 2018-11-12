@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from odoo import models, fields, api, _
+from flectra import models, fields, api, _
 from pprint import pprint
 
 
@@ -25,4 +25,4 @@ class siswa_biaya_ta_jenjang_on_calon_siswa_rel(models.Model):
         if 'potongan_harga' in vals:
             vals['jumlah_harga'] = (self.qty * self.harga) - (self.qty * vals['potongan_harga'])
         
-        return super(siswa_biaya_ta_jenjang_on_calon_siswa_rel, self).write(vals) 
+        return super(siswa_biaya_ta_jenjang_on_calon_siswa_rel, self).write(vals)  

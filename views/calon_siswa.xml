@@ -1,4 +1,4 @@
-<odoo>
+<flectra>
 	<data>
 		<record id="form_view_registrasi_filter" model="ir.ui.view">
 			<field name="name">registrasi.form.list.select</field>
@@ -277,4 +277,4 @@
 			<!-- <field name="tree_view_id" ref="siswa_psb_ocb11.registrasi_form_list"/> -->
 		</record>
 	</data>
-</odoo>
+</flectra>

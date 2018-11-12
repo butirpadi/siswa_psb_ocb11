@@ -1,4 +1,4 @@
-<odoo>
+<flectra>
 	<data>
 		<record model="ir.ui.view"
 			id="siswa_keu_ocb11.biaya_ta_jenjang_list">
@@ -112,4 +112,4 @@
 			<field name="context">{'search_default_group_by_tahunajaran':1}</field>
 		</record>
 	</data>
-</odoo>
+</flectra>

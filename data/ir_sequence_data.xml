@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<odoo>
+<flectra>
     <data noupdate="1">
         <record id="seq_formulir_pendaftaran" model="ir.sequence">
             <field name="name">Formulir Pendaftaran</field>
@@ -18,4 +18,4 @@
         </record>
 
     </data>
-</odoo>
+</flectra>

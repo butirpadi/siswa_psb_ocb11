@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 
-from odoo import models, fields, api, exceptions, _
+from flectra import models, fields, api, exceptions, _
 from pprint import pprint
 from datetime import datetime, date
 import calendar
-from odoo.exceptions import UserError, ValidationError
+from flectra.exceptions import UserError, ValidationError
 
 
 class calon_siswa(models.Model):

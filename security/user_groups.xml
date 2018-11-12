@@ -1,4 +1,4 @@
-<odoo>
+<flectra>
     <data>
         <record model="ir.module.category" id="siswa_psb_module_management">
             <field name="name">PSB Siswa</field>
@@ -20,6 +20,6 @@
             <field name="category_id" ref="siswa_psb_ocb11.siswa_psb_module_management"/>
         </record>
     </data>
-</odoo>
+</flectra>
 
 

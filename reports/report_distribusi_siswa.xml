@@ -1,4 +1,4 @@
-<odoo>
+<flectra>
     <data>
 
         <report
@@ -130,4 +130,4 @@
         </template>
 
     </data>
-</odoo>
+</flectra>

@@ -1,4 +1,4 @@
-<odoo>
+<flectra>
     <data>
         <record model="ir.ui.view" id="siswa_psb_ocb11.biaya_ta_jenjang_list">
             <field name="name">siswa_psb_ocb11_biaya_ta_jenjang_list</field>
@@ -91,4 +91,4 @@
 
 
     </data>
-</odoo>
+</flectra>

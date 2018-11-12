@@ -1,4 +1,4 @@
-<odoo>
+<flectra>
     <data>
 
         <record id="format_kwitansi_formulir_pendaftaran" model="report.paperformat">
@@ -115,4 +115,4 @@
         </template>
 
     </data>
-</odoo>
+</flectra>

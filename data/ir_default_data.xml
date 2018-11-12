@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<odoo>
+<flectra>
     <data  >
         <!-- <record id="default_psb_setting_data" model="siswa_psb_ocb11.psb_setting">
             <field name="name">PSB Setting</field>
@@ -10,4 +10,4 @@
 			name="generate_init_on_install" />
 
     </data>
-</odoo>
+</flectra>

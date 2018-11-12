@@ -1,4 +1,4 @@
-from odoo import models, fields, api
+from flectra import models, fields, api
 from pprint import pprint
 
 class wizard_report_distribusi_siswa(models.TransientModel):
@@ -47,4 +47,4 @@ class wizard_report_distribusi_siswa(models.TransientModel):
 
     def action_print(self):
         return self.env.ref('siswa_psb_ocb11.report_distribusi_siswa_action').report_action(self)
-  
+   
