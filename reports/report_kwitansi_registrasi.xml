@@ -1,171 +1,195 @@
 <odoo>
-    <data>
+	<data>
 
-        <report
-            id="report_bukti_pembayaran_registrasi_action"
-            model="siswa_psb_ocb11.calon_siswa"
-            string="Bukti Pembayaran"
-            report_type="qweb-pdf"
-            name="siswa_psb_ocb11.report_bp_registrasi"
-            file="siswa_psb_ocb11.report_bp_registrasi"
-            attachment_use="False"
-            print_report_name="'BuktiRegistrasi-%s' % (object.reg_number+'-'+object.tanggal_registrasi)"
-            menu="False"
-            paperformat="siswa_keu_ocb11.format_bukti_pembayaran"
-        />
-    
-         <template id="siswa_psb_ocb11.report_bp_registrasi">
-            <t t-call="web.html_container">            
-                <t t-foreach="docs" t-as="o">
-                    <t t-call="web.basic_layout">
-                        <div class="page">
-                            <style>
-                                table.noborder,table.noborder tbody tr, table.noborder tr td{
-                                    border-left:none!important;
-                                    border-right:none!important;
-                                    border-bottom:none!important;
-                                    border-top:none!important;
-                                    background-color:transparent!important
-                                }
-                                .table tbody tr, .table tbody tr td, table.noborder tbody tr, table.noborder tr td{
-                                    margin: 0!important;
-                                    padding: 0!important;
-                                    border:none!important;
-                                }
-                                .table tbody tr:last, .table tbody tr:last td{
-                                    border-bottom-width: thin!important;
-                                    border-bottom-style: solid!important;
-                                    border-bottom-color: black!important;
-                                }
+		<report id="report_bukti_pembayaran_registrasi_action"
+			model="siswa_psb_ocb11.calon_siswa" string="Bukti Pembayaran"
+			report_type="qweb-pdf" name="siswa_psb_ocb11.report_bp_registrasi"
+			file="siswa_psb_ocb11.report_bp_registrasi" attachment_use="False"
+			print_report_name="'BuktiRegistrasi-%s' % (object.reg_number+'-'+object.tanggal_registrasi)"
+			menu="False" paperformat="siswa_keu_ocb11.format_bukti_pembayaran" />
 
-                                .table thead tr, .table thead tr th{
-                                    border-bottom-width: thin!important;
-                                    border-bottom-style: solid!important;
-                                    border-bottom-color: black!important;
-                                    border-top-width: thin!important;
-                                    border-top-style: solid!important;
-                                    border-top-color: black!important;
-                                    padding-left:0!important;
-                                }
-                            </style>
+		<template id="siswa_psb_ocb11.report_bp_registrasi">
+			<t t-call="web.html_container">
+				<t t-foreach="docs" t-as="o">
+					<t t-call="web.basic_layout">
+						<div class="page">
+							<style>
+								table.noborder,table.noborder tbody tr, table.noborder tr td{
+								border-left:none!important;
+								border-right:none!important;
+								border-bottom:none!important;
+								border-top:none!important;
+								background-color:transparent!important
+								}
+								.table tbody tr, .table tbody tr td, table.noborder tbody tr,
+								table.noborder tr td{
+								margin: 0!important;
+								padding: 0!important;
+								border:none!important;
+								}
+								.table tbody tr:last, .table tbody tr:last td{
+								border-bottom-width: thin!important;
+								border-bottom-style: solid!important;
+								border-bottom-color: black!important;
+								}
 
-                            <div class="row" >
-                                <div class="col-xs-8" >
-                                    <strong><p style="margin-top:0;margin-bottom:0;text-transform:uppercase;font-weight:bolder;" t-esc="user.company_id.name"/></strong>
-                                    <p style="margin-top:0;margin-bottom:0;" ><span t-esc="user.company_id.street" ></span> <span t-esc="user.company_id.street2" ></span></p>
-                                    <p style="margin-top:0;margin-bottom:0;" ><span t-esc="user.company_id.city" ></span> <span t-esc="user.company_id.state_id.name" ></span> <span t-esc="user.company_id.zip" ></span></p>
-                                    <p style="margin-top:0;margin-bottom:0;" >Telp: <span t-esc="user.company_id.phone" ></span></p>
-                                </div>
-                                <div class="col-xs-4 text-right" >
-                                    <h3><strong>BUKTI PEMBAYARAN</strong></h3>
-                                    <span t-esc="o.reg_number" />
-                                </div>
-                                <div class="col-xs-12" >  
-                                    <hr style="border-top: 4px double black;" />   
-                                    <table class="table noborder">
-                                        <tbody>
-                                            <tr>
-                                                <td class="col-xs-2" >
-                                                    <strong>Tanggal</strong>
-                                                </td>
-                                                <td style="width:10px;" class="text-left" >:</td>
-                                                <td class="col-xs-3" >
-                                                    <span t-field="o.tanggal_registrasi" t-field-options='{"format": "dd MMMM y"}'/>
-                                                </td>
-                                                <td class="col-xs-3" >
-                                                    <strong>No. Registrasi</strong>
-                                                </td>
-                                                <td style="width:10px;" class="text-left" >:</td>
-                                                <td class="col-xs-3" >
-                                                    <span t-field="o.reg_number" />
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td >
-                                                    <strong>Jam Cetak</strong>
-                                                </td>
-                                                <td  >:</td>
-                                                <td>
-                                                    <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%H:%M:%S')"/>   
-                                                </td>
-                                                <td  >
-                                                    <strong>Nama</strong>
-                                                </td>
-                                                <td  >:</td>
-                                                <td>
-                                                    <span t-field="o.name" />
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                    
-                                    <table class="table" >
-                                        <thead>
-                                            <tr >
-                                                <th colspan="4">
-                                                    <strong>Keterangan Pembayaran</strong>
-                                                </th>
-                                                <th colspan="2" class="text-right" >
-                                                    <strong>Jumlah (Rp)</strong>
-                                                </th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <t t-foreach="o.payment_lines" t-as="pay">
-                                                <tr>
-                                                    <td colspan="4">
-                                                        <span t-field="pay.biaya_id.name" /> 
-                                                        <t t-if="pay.is_bulanan">
-                                                            <span t-field="pay.bulan" /> 
-                                                        </t>
-                                                    </td>
-                                                    <td colspan="2" class="text-right" >
-                                                        <span t-field="pay.dibayar" />
-                                                    </td>
-                                                </tr>
-                                            </t>
-                                            <tr style="border-top:solid thin black !important;" >
-                                                <td colspan="5" style="padding-top:5px;padding-bottom:5px;" >
-                                                    <strong>Terbilang:</strong>
-                                                </td>
-                                                <td style="border-bottom:solid thin black;padding-top:5px;padding-bottom:5px;" >
-                                                    <strong class="" >Total :</strong>
-                                                    <span t-field="o.total" class="pull-right" />
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td colspan="5" >
-                                                    <i style="text-transform: capitalize;" ><span t-field="o.terbilang" /></i>
-                                                </td>
-                                                <td  >
-                                                    
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td colspan="3" style="vertical-align:bottom;" >
-                                                    <i>Catatan:</i><br/>
-                                                    <i>-Disimpan sebagai bukti pembayaran yang SAH.</i><br/>
-                                                    <i>-Uang yang telah dibayarkan tidak dapat dikembalikan.</i>
-                                                </td>
-                                                <td colspan="3" class="text-center" >
-                                                    Sidoarjo, <span t-field="o.tanggal_registrasi" t-field-options='{"format": "dd MMMM y"}'/>
-                                                    <p>Staff Administrasi</p>
-                                                    <br/>
-                                                    <br/>
-                                                    <br/>
-                                                    (__________________________)
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>                
-                        </div>
-                    </t>
-                </t>
-            </t>
-        </template>
-    
+								.table thead tr, .table thead tr th{
+								border-bottom-width: thin!important;
+								border-bottom-style: solid!important;
+								border-bottom-color: black!important;
+								border-top-width: thin!important;
+								border-top-style: solid!important;
+								border-top-color: black!important;
+								padding-left:0!important;
+								}
+							</style>
 
-    </data>
+							<div class="row">
+								<div class="col-xs-8">
+									<strong>
+										<p
+											style="margin-top:0;margin-bottom:0;text-transform:uppercase;font-weight:bolder;"
+											t-esc="user.company_id.name" />
+									</strong>
+									<p style="margin-top:0;margin-bottom:0;">
+										<span t-esc="user.company_id.street"></span>
+										<span t-esc="user.company_id.street2"></span>
+									</p>
+									<p style="margin-top:0;margin-bottom:0;">
+										<span t-esc="user.company_id.city"></span>
+										<span t-esc="user.company_id.state_id.name"></span>
+										<span t-esc="user.company_id.zip"></span>
+									</p>
+									<p style="margin-top:0;margin-bottom:0;">
+										Telp:
+										<span t-esc="user.company_id.phone"></span>
+									</p>
+								</div>
+								<div class="col-xs-4 text-right">
+									<h3>
+										<strong>BUKTI PEMBAYARAN</strong>
+									</h3>
+									<span t-esc="o.reg_number" />
+								</div>
+								<div class="col-xs-12">
+									<hr style="border-top: 4px double black;" />
+									<table class="table noborder">
+										<tbody>
+											<tr>
+												<td class="col-xs-2">
+													<strong>Tanggal</strong>
+												</td>
+												<td style="width:10px;" class="text-left">:</td>
+												<td class="col-xs-3">
+													<span t-field="o.tanggal_registrasi"
+														t-field-options='{"format": "dd MMMM y"}' />
+												</td>
+												<td class="col-xs-3">
+													<strong>No. Registrasi</strong>
+												</td>
+												<td style="width:10px;" class="text-left">:</td>
+												<td class="col-xs-3">
+													<span t-field="o.reg_number" />
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<strong>Jam Cetak</strong>
+												</td>
+												<td>:</td>
+												<td>
+													<span
+														t-esc="context_timestamp(datetime.datetime.now()).strftime('%H:%M:%S')" />
+												</td>
+												<td>
+													<strong>Nama</strong>
+												</td>
+												<td>:</td>
+												<td>
+													<span t-field="o.name" />
+												</td>
+											</tr>
+										</tbody>
+									</table>
+
+									<table class="table">
+										<thead>
+											<tr>
+												<th colspan="4">
+													<strong>Keterangan Pembayaran</strong>
+												</th>
+												<th colspan="2" class="text-right">
+													<strong>Jumlah (Rp)</strong>
+												</th>
+											</tr>
+										</thead>
+										<tbody>
+											<t t-foreach="o.pembayaran_lines" t-as="pay">
+												<t t-if="pay.dibayar > 0">
+													<tr>
+														<td colspan="4">
+															<span t-field="pay.biaya_id.name" />
+															<t t-if="pay.is_bulanan">
+																<span t-field="pay.bulan" />
+															</t>
+														</td>
+														<td colspan="2" class="text-right">
+															<span t-field="pay.dibayar" />
+														</td>
+													</tr>
+												</t>
+											</t>
+											<tr style="border-top:solid thin black !important;">
+												<td colspan="5"
+													style="padding-top:5px;padding-bottom:5px;">
+													<strong>Terbilang:</strong>
+												</td>
+												<td
+													style="border-bottom:solid thin black;padding-top:5px;padding-bottom:5px;">
+													<strong class="">Total :</strong>
+													<span t-field="o.total" class="pull-right" />
+												</td>
+											</tr>
+											<tr>
+												<td colspan="5">
+													<i style="text-transform: capitalize;">
+														<span t-field="o.terbilang" />
+													</i>
+												</td>
+												<td>
+
+												</td>
+											</tr>
+											<tr>
+												<td colspan="3" style="vertical-align:bottom;">
+													<i>Catatan:</i>
+													<br />
+													<i>-Disimpan sebagai bukti pembayaran yang SAH.</i>
+													<br />
+													<i>-Uang yang telah dibayarkan tidak dapat dikembalikan.
+													</i>
+												</td>
+												<td colspan="3" class="text-center">
+													Sidoarjo,
+													<span t-field="o.tanggal_registrasi"
+														t-field-options='{"format": "dd MMMM y"}' />
+													<p>Staff Administrasi</p>
+													<br />
+													<br />
+													<br />
+													(__________________________)
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+					</t>
+				</t>
+			</t>
+		</template>
+
+
+	</data>
 </odoo>

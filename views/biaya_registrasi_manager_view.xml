@@ -1,0 +1,115 @@
+<odoo>
+	<data>
+		<record model="ir.ui.view"
+			id="siswa_keu_ocb11.biaya_ta_jenjang_list">
+			<field name="name">siswa_keu_ocb11_biaya_ta_jenjang_list</field>
+			<field name="model">siswa_keu_ocb11.biaya_ta_jenjang</field>
+			<field name="arch" type="xml">
+				<tree>
+					<field name="biaya_id" />
+					<field name="tahunajaran_id" context="{'active_test': False}" />
+					<field name="jenjang_id" />
+					<field name="harga" sum="Total Harga" />
+					<field name="harga_alt" sum="Total Harga (alt)" />
+				</tree>
+			</field>
+		</record>
+
+		<record model="ir.ui.view" id="biaya_registrasi_manager_list">
+			<field name="name">biaya.registrasi.manager.list</field>
+			<field name="model">siswa_psb_ocb11.biaya_registrasi</field>
+			<field name="arch" type="xml">
+				<tree create="false" delete="false">
+					<field name="tahunajaran_id" context="{'active_test': False}" />
+					<field name="jenjang_id" />
+					<field name="total_biaya" />
+					<field name="total_biaya_alt" />
+				</tree>
+			</field>
+		</record>
+
+		<record id="biaya_registrasi_manager_filter" model="ir.ui.view">
+			<field name="name">biaya.registrasi.manager.filter</field>
+			<field name="model">siswa_psb_ocb11.biaya_registrasi</field>
+			<field name="arch" type="xml">
+				<search string="Search Formulir">
+					<field name="name" string="Name"
+						filter_domain="['|','|',('name','ilike',self),
+                                            ('tahunajaran_id','ilike',self),
+                                            ('jenjang_id','ilike',self)
+											]" />
+					<group expand="0" string="Group By">
+						<filter name="group_by_tahunajaran" string="Tahun Ajaran"
+							domain="[]" context="{'group_by':'tahunajaran_id'}" />
+						<filter name="group_by_jenjang" string="Jenjang"
+							domain="[]" context="{'group_by':'jenjang_id'}" />
+					</group>
+				</search>
+			</field>
+		</record>
+
+		<record id="biaya_registrasi_manager_form_view"
+			model="ir.ui.view">
+			<field name="name">biaya.registrsai.manager.form.view</field>
+			<field name="model">siswa_psb_ocb11.biaya_registrasi</field>
+			<field name="arch" type="xml">
+				<form duplicate="0" string="Biaya Registrasi" create="false"
+					delete="false" class="o_sale_order">
+					<!-- <header> <button name="action_confirm" type="object" string="Confirm" 
+						attrs="{'invisible':['|',('state', '=', 'reg'),('reg_number', '=', 'New')]}" 
+						class="btn btn-primary" /> <button name="action_print_kwitansi" type="object" 
+						string="Print" attrs="{'invisible':['|',('state', '=', 'draft'),('reg_number', 
+						'=', 'New')]}" class="btn" /> <button name="action_reset" type="object" string="Reset" 
+						attrs="{'invisible':[('state', '!=', 'reg')]}" class="btn btn-danger" confirm="Are 
+						you sure to do this action?" groups="siswa_psb_ocb11.siswa_psb_group_admin" 
+						/> <field name="state" widget="statusbar" statusbar_visible="draft,reg"/> 
+						</header> -->
+					<sheet>
+						<group>
+							<group>
+								<field name="tahunajaran_id" readonly="1"
+									context="{'active_test': False}"
+									options='{"no_open": True, "no_edit":True, "no_create": True, "no_create_edit":True}' />
+
+							</group>
+							<group>
+								<field name="jenjang_id" readonly="1"
+									options='{"no_open": True, "no_edit":True, "no_create": True, "no_create_edit":True}' />
+							</group>
+						</group>
+						<notebook>
+							<page name="biaya_registrasi" string="Biaya Registrasi">
+								<group>
+									<button name="generate_biaya_registrasi" type="object"
+										string="Generate Biaya Registrasi"
+										class="btn btn-primary oe_edit_only" />
+								</group>
+								
+								<field name="biaya_ta_jenjang_ids"
+									options='{"no_create": True}'
+									attrs="{'readonly':[('tahunajaran_id', '=', False),('jenjang_id', '=', False)] }">
+									<tree editable="bottom">
+										<field name="biaya_id" />
+										<field name="tahunajaran_id" />
+										<field name="jenjang_id" />
+										<field name="harga" sum="Total Harga" />
+										<field name="harga_alt" sum="Total Harga(alt)" />
+									</tree>
+								</field>
+							</page>
+						</notebook>
+
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+		<record model="ir.actions.act_window"
+			id="siswa_psb_ocb11.registrasi_manager_action_window">
+			<field name="name">Biaya Registrasi</field>
+			<field name="res_model">siswa_psb_ocb11.biaya_registrasi</field>
+			<field name="view_mode">tree,form</field>
+			<field name="context">{'search_default_group_by_tahunajaran':1}</field>
+		</record>
+	</data>
+</odoo>

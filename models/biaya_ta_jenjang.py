@@ -23,4 +23,9 @@ class biaya_ta_jenjang(models.Model):
                             (11, 'November'),
                             (12, 'Desember'),
                             ], string='Bulan')
+    tahunajaran_id = fields.Many2one('siswa_ocb11.tahunajaran', related="tahunajaran_jenjang_id.tahunajaran_id", string="Tahun Ajaran")
+    jenjang_id = fields.Many2one('siswa_ocb11.jenjang', related="tahunajaran_jenjang_id.jenjang_id", string="Jenjang")
+    
+    
+    
     
