@@ -1,7 +1,7 @@
 <flectra>
 	<data>
 		<menuitem name="PSB" id="siswa_psb_ocb11.root_menu"
-			sequence="4" />
+			sequence="4" web_icon="siswa_psb_ocb11,static/description/icon.png"  />
 
 		<menuitem name="Master"
 			id="siswa_psb_ocb11.master_menu_registrasi"
